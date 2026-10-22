@@ -1,0 +1,2665 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>A Little Universe, Made for Seji — Happy 14th Mensiversary</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Romantic Serif, Handwritten Script, and Clean Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sacramento&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        powder: '#CFE2F3',
+                        babyblue: '#E6F1FC',
+                        pastelpink: '#FADADD',
+                        dustyrose: '#C98A94',
+                        deepHaze: '#5B6B82',
+                        inkSoft: '#4A4453',
+                        lavender: '#E6E0F8',
+                        pearl: '#FDFBF7',
+                        cream: '#FAF5EE',
+                        silverblue: '#B8CCE0'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        hand: ['"Caveat"', 'cursive'],
+                        signature: ['"Sacramento"', 'cursive'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root {
+            --powder-blue: #CFE2F3;
+            --baby-blue: #E6F1FC;
+            --pastel-pink: #FADADD;
+            --dusty-rose: #C98A94;
+            --soft-lavender: #E6E0F8;
+            --pearl-white: #FDFBF7;
+            --warm-cream: #FAF5EE;
+            --silver-blue: #B8CCE0;
+            --ink-primary: #453F4E;
+            --ink-muted: #766E82;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--ink-primary);
+            background: linear-gradient(135deg, #E8F2FC 0%, #F5EBF7 48%, #FCE9EC 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        /* Subtle paper noise overlay using pure CSS gradients */
+        .paper-texture {
+            background-color: var(--pearl-white);
+            background-image: 
+                radial-gradient(rgba(201, 138, 148, 0.06) 1px, transparent 0),
+                radial-gradient(rgba(184, 204, 224, 0.08) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
+
+        .lined-paper {
+            background-color: #FDFBF7;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 31px,
+                rgba(201, 138, 148, 0.16) 31px,
+                rgba(201, 138, 148, 0.16) 32px
+            );
+            line-height: 32px;
+        }
+
+        /* Scrapbook stitched border */
+        .stitched-border {
+            border: 1.5px dashed rgba(201, 138, 148, 0.45);
+        }
+
+        .stitched-blue {
+            border: 1.5px dashed rgba(139, 173, 209, 0.55);
+        }
+
+        /* Washi Tape decorative strips */
+        .washi-tape {
+            position: absolute;
+            width: 96px;
+            height: 26px;
+            background: rgba(250, 218, 221, 0.72);
+            border-left: 2px dotted rgba(255, 255, 255, 0.8);
+            border-right: 2px dotted rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 6px rgba(91, 107, 130, 0.08);
+            backdrop-filter: blur(2px);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .washi-tape-blue {
+            background: rgba(207, 226, 243, 0.75);
+        }
+
+        .washi-tape-lavender {
+            background: rgba(230, 224, 248, 0.75);
+        }
+
+        /* Polaroid Frame Styling */
+        .polaroid-card {
+            background: #FFFFFF;
+            padding: 12px 12px 28px 12px;
+            box-shadow: 
+                0 12px 28px -6px rgba(74, 68, 83, 0.12),
+                0 4px 10px -2px rgba(74, 68, 83, 0.06),
+                inset 0 0 0 1px rgba(207, 226, 243, 0.4);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+            cursor: grab;
+            touch-action: manipulation;
+        }
+
+        .polaroid-card:active {
+            cursor: grabbing;
+        }
+
+        .polaroid-card:hover, .polaroid-card.touched-zoom {
+            transform: translateY(-6px) scale(1.025) rotate(0deg) !important;
+            box-shadow: 0 20px 38px -8px rgba(201, 138, 148, 0.25), 0 6px 16px rgba(184, 204, 224, 0.2);
+            z-index: 25;
+        }
+
+        .polaroid-card.dragging {
+            opacity: 0.85;
+            transform: scale(1.05) rotate(2deg) !important;
+            box-shadow: 0 25px 50px rgba(91, 107, 130, 0.28);
+            z-index: 40;
+        }
+
+        /* Intro Sky & Floating Lights */
+        .intro-sky {
+            background: 
+                radial-gradient(circle at 20% 25%, rgba(250, 218, 221, 0.55) 0%, transparent 45%),
+                radial-gradient(circle at 80% 30%, rgba(207, 226, 243, 0.7) 0%, transparent 50%),
+                radial-gradient(circle at 50% 75%, rgba(230, 224, 248, 0.65) 0%, transparent 55%),
+                linear-gradient(165deg, #DCEBFA 0%, #E9E2F8 48%, #FADCE2 100%);
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(8px, -12px) scale(1.08); }
+            66% { transform: translate(-7px, 7px) scale(0.95); }
+        }
+
+        @keyframes pulseHalo {
+            0%, 100% { box-shadow: 0 0 16px 6px rgba(255, 255, 255, 0.8), 0 0 32px 12px rgba(201, 138, 148, 0.35); }
+            50% { box-shadow: 0 0 26px 10px rgba(255, 255, 255, 0.95), 0 0 48px 20px rgba(184, 204, 224, 0.65); }
+        }
+
+        .light-orb {
+            animation: floatOrb var(--float-duration, 6s) ease-in-out infinite, pulseHalo 3.2s ease-in-out infinite;
+            transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .light-orb.discovered {
+            background: radial-gradient(circle, #FFFFFF 20%, #FADADD 70%, #C98A94 100%);
+            box-shadow: 0 0 24px 8px rgba(255, 255, 255, 0.95), 0 0 42px 16px rgba(201, 138, 148, 0.65);
+        }
+
+        /* Ripple effect on light click */
+        @keyframes lightRipple {
+            0% { transform: scale(0.5); opacity: 0.9; }
+            100% { transform: scale(3.8); opacity: 0; }
+        }
+
+        .orb-ripple {
+            position: absolute;
+            inset: -10px;
+            border-radius: 9999px;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            animation: lightRipple 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            pointer-events: none;
+        }
+
+        /* Soundwave bars for music player */
+        @keyframes soundBar {
+            0%, 100% { height: 4px; }
+            50% { height: 15px; }
+        }
+
+        .sound-bar {
+            width: 2.5px;
+            background-color: #C98A94;
+            border-radius: 999px;
+            transition: height 0.2s ease;
+        }
+
+        .playing .sound-bar:nth-child(1) { animation: soundBar 0.8s ease-in-out infinite 0.1s; }
+        .playing .sound-bar:nth-child(2) { animation: soundBar 0.65s ease-in-out infinite 0.3s; }
+        .playing .sound-bar:nth-child(3) { animation: soundBar 0.9s ease-in-out infinite 0.2s; }
+        .playing .sound-bar:nth-child(4) { animation: soundBar 0.75s ease-in-out infinite 0.4s; }
+
+        /* Page Transitions */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px) scale(0.99);
+            transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .page-section.active-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Scrapbook sub-page turn transition */
+        .scrapbook-spread {
+            display: none;
+            animation: scrapbookTurn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            transform-origin: left center;
+        }
+
+        .scrapbook-spread.active-spread {
+            display: block;
+        }
+
+        @keyframes scrapbookTurn {
+            0% {
+                opacity: 0;
+                transform: perspective(1200px) rotateY(-8deg) translateX(16px);
+            }
+            100% {
+                opacity: 1;
+                transform: perspective(1200px) rotateY(0deg) translateX(0);
+            }
+        }
+
+        /* Envelope Opening Animation */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+
+        .envelope-flap {
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.4s;
+        }
+
+        .envelope-open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .wax-seal {
+            transition: transform 0.5s ease, opacity 0.4s ease;
+        }
+
+        .envelope-open .wax-seal {
+            transform: scale(1.25) rotate(12deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Sparkle Particle Animation */
+        @keyframes sparkleBurst {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            60% {
+                opacity: 0.95;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.1) rotate(145deg);
+                opacity: 0;
+            }
+        }
+
+        .sparkle-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: sparkleBurst 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5EBF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D5C6E0;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C98A94;
+        }
+    </style>
+</head>
+
+<body class="relative selection:bg-pastelpink selection:text-inkSoft">
+
+    <!-- Persistent Background Audio (lagu 1.mp3) -->
+    <audio id="bg-music" src="lagu 1.mp3" loop preload="auto"></audio>
+
+    <!-- Ambient Floating Dust & Starlight Background Canvas -->
+    <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- ===================================================================== -->
+    <!-- 1. INTRO PAGE — "FOLLOW THE LITTLE LIGHTS" + SECRET CONSTELLATION     -->
+    <!-- ===================================================================== -->
+    <section id="intro-screen" class="fixed inset-0 z-50 intro-sky flex flex-col justify-between items-center p-4 sm:p-8 overflow-hidden transition-all duration-1000">
+        
+        <!-- Soft drifting decorative clouds & framing corners -->
+        <div class="pointer-events-none absolute inset-3 sm:inset-6 border border-white/50 rounded-3xl flex flex-col justify-between p-4">
+            <div class="flex justify-between items-center text-xs tracking-widest uppercase text-deepHaze/70 font-serif">
+                <span>✦ 22 . 12 . 2024</span>
+                <span>14th Mensiversary Keepsake</span>
+            </div>
+            <div class="flex justify-between items-center text-xs tracking-widest uppercase text-deepHaze/70 font-serif">
+                <span>Miyu &amp; Seji</span>
+                <span>A Little Universe ✦</span>
+            </div>
+        </div>
+
+        <!-- Top Intro Heading -->
+        <div class="relative z-20 text-center mt-8 sm:mt-10 max-w-xl mx-auto px-4">
+            <p class="text-xs sm:text-sm tracking-[0.28em] uppercase text-deepHaze/80 mb-2 font-medium">
+                ✦ Chapter Zero &middot; Follow The Little Lights ✦
+            </p>
+            <h1 class="font-serif italic text-3xl sm:text-5xl text-inkSoft font-semibold tracking-wide leading-tight drop-shadow-sm">
+                For Seji, with love.
+            </h1>
+            <p class="font-serif text-lg sm:text-2xl text-deepHaze mt-1">
+                A little universe made by Miyu.
+            </p>
+            <div class="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/55 backdrop-blur-md border border-white/70 shadow-sm">
+                <span class="text-dustyrose text-xs">✧</span>
+                <p class="text-xs sm:text-sm text-inkSoft/85 italic">
+                    “Touch the little lights to discover what my heart wants to tell you.”
+                </p>
+                <span class="text-dustyrose text-xs">✧</span>
+            </div>
+        </div>
+
+        <!-- Interactive Star Constellation Sky Area -->
+        <div id="constellation-stage" class="relative w-full max-w-3xl flex-1 my-2 flex items-center justify-center">
+            <!-- SVG Constellation Lines connecting the 5 lights into a Heart Constellation -->
+            <svg id="constellation-svg" viewBox="0 0 100 100" preserveAspectRatio="none" class="absolute inset-0 w-full h-full pointer-events-none z-10">
+                <defs>
+                    <linearGradient id="heartLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9" />
+                        <stop offset="50%" stop-color="#FADADD" stop-opacity="0.95" />
+                        <stop offset="100%" stop-color="#CFE2F3" stop-opacity="0.9" />
+                    </linearGradient>
+                    <filter id="glowFilter">
+                        <feGaussianBlur stdDeviation="0.8" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <!-- Heart constellation path connecting stars as they are discovered -->
+                <path id="constellation-path"
+                      d="M 50 30 L 26 22 L 18 48 L 50 82 L 82 48 L 74 22 Z"
+                      fill="rgba(250, 218, 221, 0.0)"
+                      stroke="url(#heartLineGrad)"
+                      stroke-width="0.55"
+                      stroke-dasharray="260"
+                      stroke-dashoffset="260"
+                      filter="url(#glowFilter)"
+                      class="transition-all duration-1000 ease-out" />
+            </svg>
+
+            <!-- 5 Interactive Floating Lights positioned to form a romantic constellation -->
+            <!-- Light 1: Top Left lobe -->
+            <button type="button"
+                    data-index="0"
+                    style="left: 26%; top: 22%; --float-duration: 5.5s;"
+                    class="light-orb group absolute -translate-x-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-dustyrose"
+                    aria-label="Little light 1">
+                <span class="w-3 h-3 rounded-full bg-pastelpink group-hover:scale-125 transition-transform"></span>
+                <span class="absolute -bottom-6 text-[10px] tracking-widest uppercase text-deepHaze/75 font-serif opacity-80">Star I</span>
+            </button>
+
+            <!-- Light 2: Far Left curve -->
+            <button type="button"
+                    data-index="1"
+                    style="left: 18%; top: 48%; --float-duration: 6.8s;"
+                    class="light-orb group absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/90 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-dustyrose"
+                    aria-label="Little light 2">
+                <span class="w-2.5 h-2.5 rounded-full bg-powder group-hover:scale-125 transition-transform"></span>
+                <span class="absolute -bottom-6 text-[10px] tracking-widest uppercase text-deepHaze/75 font-serif opacity-80">Star II</span>
+            </button>
+
+            <!-- Light 3: Bottom Heart Point -->
+            <button type="button"
+                    data-index="2"
+                    style="left: 50%; top: 82%; --float-duration: 6.1s;"
+                    class="light-orb group absolute -translate-x-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-dustyrose"
+                    aria-label="Little light 3">
+                <span class="w-3.5 h-3.5 rounded-full bg-dustyrose/70 group-hover:scale-125 transition-transform"></span>
+                <span class="absolute -bottom-6 text-[10px] tracking-widest uppercase text-deepHaze/75 font-serif opacity-80">Star III</span>
+            </button>
+
+            <!-- Light 4: Far Right curve -->
+            <button type="button"
+                    data-index="3"
+                    style="left: 82%; top: 48%; --float-duration: 7.3s;"
+                    class="light-orb group absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/90 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-dustyrose"
+                    aria-label="Little light 4">
+                <span class="w-2.5 h-2.5 rounded-full bg-lavender group-hover:scale-125 transition-transform"></span>
+                <span class="absolute -bottom-6 text-[10px] tracking-widest uppercase text-deepHaze/75 font-serif opacity-80">Star IV</span>
+            </button>
+
+            <!-- Light 5: Top Right lobe -->
+            <button type="button"
+                    data-index="4"
+                    style="left: 74%; top: 22%; --float-duration: 5.9s;"
+                    class="light-orb group absolute -translate-x-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-dustyrose"
+                    aria-label="Little light 5">
+                <span class="w-3 h-3 rounded-full bg-pastelpink group-hover:scale-125 transition-transform"></span>
+                <span class="absolute -bottom-6 text-[10px] tracking-widest uppercase text-deepHaze/75 font-serif opacity-80">Star V</span>
+            </button>
+
+            <!-- Decorative center star vertex of the heart -->
+            <div id="constellation-crown" style="left: 50%; top: 30%;" class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-40 transition-opacity duration-700">
+                <span class="text-white text-lg drop-shadow">✦</span>
+            </div>
+
+            <!-- Message Display Card inside the Constellation -->
+            <div id="intro-message-card" class="relative z-30 max-w-md mx-4 px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-white/90 shadow-lg text-center transition-all duration-500">
+                <p id="intro-light-counter" class="text-[11px] uppercase tracking-[0.22em] text-dustyrose font-semibold mb-1.5">
+                    ✦ 0 of 5 Little Lights Discovered ✦
+                </p>
+                <p id="intro-quote-text" class="font-serif italic text-xl sm:text-2xl text-inkSoft leading-relaxed min-h-[3.5rem] flex items-center justify-center">
+                    Tap any glowing star in the sky above...
+                </p>
+                <!-- Secret Constellation unlocked banner -->
+                <div id="constellation-secret-banner" class="hidden mt-3 pt-3 border-t border-dustyrose/25">
+                    <p class="text-xs uppercase tracking-[0.2em] text-deepHaze font-semibold">
+                         Secret Constellation Completed 
+                    </p>
+                    <p class="font-hand text-2xl text-dustyrose mt-0.5">
+                        “Somehow, all my stars led me to you.”
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Action Area: Enter Our Little World -->
+        <div class="relative z-20 mb-6 sm:mb-8 text-center flex flex-col items-center gap-2">
+            <button id="enter-world-btn"
+                    type="button"
+                    class="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-white/90 hover:bg-white text-inkSoft font-serif text-lg sm:text-xl tracking-wide shadow-md hover:shadow-xl border border-dustyrose/35 transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-dustyrose">
+                <span class="text-dustyrose transition-transform duration-300 group-hover:rotate-45">✦</span>
+                <span>Enter Our Little World</span>
+                <span class="text-dustyrose transition-transform duration-300 group-hover:-rotate-45">✦</span>
+            </button>
+            <span id="intro-hint-sub" class="text-[11px] text-deepHaze/75 tracking-wide">
+                Music &amp; memories await inside &middot; Best experienced with sound on
+            </span>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PERSISTENT HEADER, NAVIGATION & FLOATING MUSIC CONTROLLER             -->
+    <!-- ===================================================================== -->
+    <div id="main-app-shell" class="relative z-10 min-h-screen flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-700">
+        
+        <!-- Top Romantic Header & Navigation Bar -->
+        <header class="sticky top-0 z-40 backdrop-blur-md bg-pearl/80 border-b border-dustyrose/20 shadow-sm">
+            <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2.5 flex flex-col md:flex-row items-center justify-between gap-2.5">
+                
+                <!-- Brand / Couple Crest -->
+                <div class="flex items-center justify-between w-full md:w-auto">
+                    <button type="button" onclick="switchTab('home')" class="flex items-center gap-2.5 text-left group focus:outline-none">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-pastelpink to-powder flex items-center justify-center border border-white shadow-inner">
+                            <span class="font-serif italic text-sm font-bold text-inkSoft">M&amp;S</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif italic text-lg leading-none text-inkSoft font-semibold group-hover:text-dustyrose transition-colors">
+                                A Little Universe
+                            </span>
+                            <span class="block text-[10px] tracking-[0.2em] uppercase text-deepHaze">
+                                Miyu &amp; Seji &middot; 22.12.2024
+                            </span>
+                        </div>
+                    </button>
+
+                    <!-- Mobile Music Quick Button -->
+                    <div class="flex md:hidden items-center gap-2">
+                        <button type="button"
+                                onclick="toggleMusic()"
+                                class="music-toggle-ui flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 border border-dustyrose/30 text-xs text-inkSoft shadow-sm"
+                                aria-label="Toggle Background Music">
+                            <div class="soundwave-indicator flex items-end gap-0.5 h-3.5">
+                                <span class="sound-bar h-1.5"></span>
+                                <span class="sound-bar h-2.5"></span>
+                                <span class="sound-bar h-1"></span>
+                                <span class="sound-bar h-2"></span>
+                            </div>
+                            <span class="music-label-text font-medium">Music</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Scrapbook Navigation Tabs -->
+                <nav aria-label="Main Navigation" class="w-full md:w-auto overflow-x-auto no-scrollbar">
+                    <ul class="flex items-center justify-start sm:justify-center gap-1 sm:gap-1.5 min-w-max px-1">
+                        <li>
+                            <button type="button" data-tab="home" onclick="switchTab('home')"
+                                    class="nav-tab-btn active-nav px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 flex items-center gap-1.5">
+                                <span class="text-[10px]">✦</span>
+                                <span>Home</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" data-tab="letter" onclick="switchTab('letter')"
+                                    class="nav-tab-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 flex items-center gap-1.5">
+                                <span class="text-[10px]">✧</span>
+                                <span>Love Letter</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" data-tab="quiz" onclick="switchTab('quiz')"
+                                    class="nav-tab-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 flex items-center gap-1.5">
+                                <span class="text-[10px]">❀</span>
+                                <span>Our Little Quiz</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" data-tab="memories" onclick="switchTab('memories')"
+                                    class="nav-tab-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 flex items-center gap-1.5">
+                                <span class="text-[10px]">✿</span>
+                                <span>Memories</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" data-tab="secret" onclick="switchTab('secret')"
+                                    class="nav-tab-btn relative px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 flex items-center gap-1.5">
+                                <span id="secret-nav-icon" class="text-[10px]">❦</span>
+                                <span>Secret Corner</span>
+                                <span id="secret-unlocked-dot" class="hidden w-2 h-2 rounded-full bg-dustyrose animate-ping"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Desktop Music Player & Volume Control -->
+                <div class="hidden md:flex items-center gap-2.5 bg-white/85 px-3.5 py-1.5 rounded-full border border-dustyrose/25 shadow-sm">
+                    <button type="button"
+                            onclick="toggleMusic()"
+                            class="music-toggle-ui flex items-center gap-2 text-xs text-inkSoft hover:text-dustyrose transition-colors focus:outline-none"
+                            title="Play / Pause Music">
+                        <div class="soundwave-indicator flex items-end gap-0.5 h-3.5">
+                            <span class="sound-bar h-1.5"></span>
+                            <span class="sound-bar h-3"></span>
+                            <span class="sound-bar h-1.5"></span>
+                            <span class="sound-bar h-2.5"></span>
+                        </div>
+                        <span class="music-label-text font-medium">Paused</span>
+                    </button>
+                    <span class="text-silverblue">|</span>
+                    <input id="volume-slider"
+                           type="range"
+                           min="0"
+                           max="1"
+                           step="0.05"
+                           value="0.7"
+                           aria-label="Music Volume"
+                           class="w-16 h-1 bg-powder rounded-lg appearance-none cursor-pointer accent-dustyrose">
+                </div>
+            </div>
+        </header>
+
+        <!-- ================================================================= -->
+        <!-- MAIN CONTENT CONTAINER                                            -->
+        <!-- ================================================================= -->
+        <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10">
+
+            <!-- ============================================================= -->
+            <!-- MENU 1: HOME PAGE — OUR LITTLE UNIVERSE                       -->
+            <!-- ============================================================= -->
+            <section id="page-home" class="page-section active-page">
+                <div class="relative paper-texture rounded-3xl p-6 sm:p-10 shadow-xl border border-white/90 overflow-hidden">
+                    <!-- Decorative Washi Tapes -->
+                    <div class="washi-tape -top-2 left-10 -rotate-6"></div>
+                    <div class="washi-tape washi-tape-blue -top-2 right-10 rotate-6"></div>
+
+                    <!-- Inner Stitched Scrapbook Frame -->
+                    <div class="stitched-border rounded-2xl p-5 sm:p-8 relative">
+                        
+                        <!-- Minimalist Botanical & Ribbon Header Ornament -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-babyblue/80 border border-powder text-deepHaze text-xs tracking-[0.2em] uppercase mb-4">
+                                <span>✦</span>
+                                <span>Since 22.12.2024</span>
+                                <span>✦</span>
+                            </div>
+
+                            <!-- Couple Names Pill -->
+                            <div class="flex items-center gap-4 my-1">
+                                <span class="font-hand text-2xl sm:text-3xl text-dustyrose">Miyu</span>
+                                <!-- Minimalist CSS/SVG Ribbon Bow -->
+                                <svg class="w-8 h-6 text-dustyrose" viewBox="0 0 48 32" fill="none">
+                                    <path d="M24 16C17 6 6 6 6 14C6 21 17 20 24 16ZM24 16C31 6 42 6 42 14C42 21 31 20 24 16ZM24 16L16 28M24 16L32 28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="24" cy="16" r="2.5" fill="currentColor"/>
+                                </svg>
+                                <span class="font-hand text-2xl sm:text-3xl text-deepHaze">Seji</span>
+                            </div>
+
+                            <!-- Main Mensiversary Heading -->
+                            <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl font-semibold text-inkSoft tracking-tight mt-2 leading-tight">
+                                “Happy 14th Mensiversary, Bebe!”
+                            </h1>
+
+                            <!-- Subtitle with gentle typing/fade feel -->
+                            <p id="home-subtitle-typed" class="font-serif italic text-lg sm:text-2xl text-deepHaze mt-3 max-w-2xl">
+                                “Fourteen months of us, and still my favorite story.”
+                            </p>
+
+                            <!-- Decorative Divider -->
+                            <div class="flex items-center gap-3 my-6 text-dustyrose/70">
+                                <span class="w-12 sm:w-24 h-px bg-dustyrose/35"></span>
+                                <span class="text-sm">❀ ✦ ❀</span>
+                                <span class="w-12 sm:w-24 h-px bg-dustyrose/35"></span>
+                            </div>
+                        </div>
+
+                        <!-- Live Relationship Journey Counter (Since 22 December 2024) -->
+                        <div class="my-6 bg-gradient-to-r from-babyblue/70 via-lavender/50 to-pastelpink/60 rounded-2xl p-5 sm:p-7 border border-white shadow-inner text-center">
+                            <p class="text-xs uppercase tracking-[0.22em] text-deepHaze font-semibold mb-1">
+                                ✧ Our Journey Together Since 22 December 2024 ✧
+                            </p>
+                            <div class="mt-3 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+                                <div class="bg-white/85 backdrop-blur-sm px-5 py-3 rounded-xl border border-powder shadow-sm min-w-[110px]">
+                                    <span id="counter-total-days" class="block font-serif text-3xl sm:text-4xl font-bold text-inkSoft">---</span>
+                                    <span class="text-[11px] uppercase tracking-widest text-deepHaze">Total Days</span>
+                                </div>
+                                <div class="bg-white/85 backdrop-blur-sm px-4 py-3 rounded-xl border border-pastelpink shadow-sm min-w-[90px]">
+                                    <span id="counter-months" class="block font-serif text-2xl sm:text-3xl font-semibold text-dustyrose">--</span>
+                                    <span class="text-[11px] uppercase tracking-widest text-deepHaze">Months</span>
+                                </div>
+                                <div class="bg-white/85 backdrop-blur-sm px-4 py-3 rounded-xl border border-powder shadow-sm min-w-[90px]">
+                                    <span id="counter-days-rem" class="block font-serif text-2xl sm:text-3xl font-semibold text-inkSoft">--</span>
+                                    <span class="text-[11px] uppercase tracking-widest text-deepHaze">Days</span>
+                                </div>
+                                <div class="bg-white/85 backdrop-blur-sm px-4 py-3 rounded-xl border border-lavender shadow-sm min-w-[90px]">
+                                    <span id="counter-hours" class="block font-serif text-2xl sm:text-3xl font-semibold text-deepHaze">--</span>
+                                    <span class="text-[11px] uppercase tracking-widest text-deepHaze">Hours</span>
+                                </div>
+                            </div>
+                            <p class="font-hand text-xl text-inkSoft/85 mt-4">
+                                Every single day since 22.12.2024 has been warmer because of you.
+                            </p>
+                        </div>
+
+                        <!-- Mini Section: "A little reminder for you" -->
+                        <div class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                            <div class="md:col-span-7 bg-cream/90 rounded-2xl p-6 border border-dustyrose/25 shadow-sm relative">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h2 class="font-serif italic text-2xl text-inkSoft font-semibold flex items-center gap-2">
+                                        <span class="text-dustyrose text-base">❀</span>
+                                        <span>A little reminder for you</span>
+                                    </h2>
+                                    <span class="text-[11px] uppercase tracking-widest text-dustyrose font-medium">Note from Miyu</span>
+                                </div>
+                                <p id="reminder-note-text" class="text-sm sm:text-base text-inkSoft/90 leading-relaxed min-h-[4.2rem] transition-opacity duration-300">
+                                    “Whenever the world feels a little too heavy, remember that you always have a gentle place to rest right here with me. You are deeply loved, today and every day after.”
+                                </p>
+                                <div class="mt-4 flex items-center justify-between pt-3 border-t border-dustyrose/15">
+                                    <button type="button"
+                                            onclick="cycleReminderNote(event)"
+                                            class="text-xs font-medium text-dustyrose hover:text-inkSoft inline-flex items-center gap-1.5 transition-colors">
+                                        <span>Turn for another little reminder</span>
+                                    </button>
+                                    <span id="reminder-index-badge" class="text-xs font-serif italic text-deepHaze">1 / 4</span>
+                                </div>
+                            </div>
+
+                            <!-- Quick Chapter Navigation Cards -->
+                            <div class="md:col-span-5 flex flex-col gap-3">
+                                <button type="button"
+                                        onclick="switchTab('letter')"
+                                        class="group w-full text-left p-4 rounded-2xl bg-white/90 hover:bg-white border border-pastelpink shadow-sm hover:shadow-md transition-all flex items-center justify-between">
+                                    <div>
+                                        <span class="text-[10px] uppercase tracking-[0.2em] text-dustyrose block">Chapter I</span>
+                                        <span class="font-serif text-xl font-semibold text-inkSoft group-hover:text-dustyrose transition-colors">Open Your Love Letter</span>
+                                        <span class="block text-xs text-deepHaze mt-0.5">Words written from the heart</span>
+                                    </div>
+                                    <span class="w-9 h-9 rounded-full bg-pastelpink/40 flex items-center justify-center text-dustyrose group-hover:translate-x-1 transition-transform">→</span>
+                                </button>
+
+                                <button type="button"
+                                        onclick="switchTab('memories')"
+                                        class="group w-full text-left p-4 rounded-2xl bg-white/90 hover:bg-white border border-powder shadow-sm hover:shadow-md transition-all flex items-center justify-between">
+                                    <div>
+                                        <span class="text-[10px] uppercase tracking-[0.2em] text-deepHaze block">Chapter III</span>
+                                        <span class="font-serif text-xl font-semibold text-inkSoft group-hover:text-deepHaze transition-colors">Explore Our Memories</span>
+                                        <span class="block text-xs text-deepHaze mt-0.5">Photos, moving moments &amp; signatures</span>
+                                    </div>
+                                    <span class="w-9 h-9 rounded-full bg-powder/50 flex items-center justify-center text-deepHaze group-hover:translate-x-1 transition-transform">→</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Easter Egg Star for Secret Corner -->
+                        <div class="mt-8 text-center">
+                            <button type="button"
+                                    onclick="triggerHiddenKeepsake(event)"
+                                    class="inline-flex items-center gap-1.5 text-[11px] text-deepHaze/70 hover:text-dustyrose transition-colors italic font-serif"
+                                    title="A tiny hidden star">
+                                <span>✧</span>
+                                <span id="easter-egg-hint">Psst... touch this little star to pocket a secret keepsake</span>
+                                <span>✧</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- MENU 2: LOVE LETTER — THE HEART OF THIS WEBSITE               -->
+            <!-- ============================================================= -->
+            <section id="page-letter" class="page-section">
+                <div class="max-w-3xl mx-auto">
+                    
+                    <!-- Envelope Cover Stage (Click to break seal & slide letter out) -->
+                    <div id="envelope-stage" class="my-6 flex flex-col items-center justify-center text-center">
+                        <p class="text-xs uppercase tracking-[0.25em] text-deepHaze mb-4">
+                             A Personal Letter Sealed For Seji 
+                        </p>
+
+                        <div id="interactive-envelope"
+                             onclick="openLoveLetter(event)"
+                             role="button"
+                             tabindex="0"
+                             onkeydown="if(event.key==='Enter'||event.key===' ') openLoveLetter(event)"
+                             class="envelope-wrapper relative w-full max-w-md h-64 sm:h-72 bg-gradient-to-b from-cream to-pastelpink/55 rounded-2xl shadow-xl border border-dustyrose/30 cursor-pointer flex flex-col items-center justify-center overflow-hidden group transition-transform duration-500 hover:-translate-y-1">
+                            
+                            <!-- Top Envelope Flap SVG -->
+                            <svg class="envelope-flap absolute top-0 inset-x-0 w-full h-40 z-20 text-pastelpink/85 drop-shadow-sm" viewBox="0 0 400 160" preserveAspectRatio="none">
+                                <polygon points="0,0 400,0 200,145" fill="currentColor" stroke="#C98A94" stroke-opacity="0.35" stroke-width="1.5"/>
+                            </svg>
+
+                            <!-- Letter preview peeking inside -->
+                            <div class="w-10/12 h-44 bg-pearl rounded-xl border border-dustyrose/20 shadow-inner flex flex-col items-center justify-center p-4 z-10 transition-transform duration-700 group-hover:-translate-y-2">
+                                <p class="font-serif italic text-lg text-inkSoft">To: My Dearest Seji</p>
+                                <p class="text-[11px] uppercase tracking-widest text-deepHaze mt-1">14th Mensiversary &middot; From Miyu</p>
+                            </div>
+
+                            <!-- Bottom Envelope Pocket Fold -->
+                            <svg class="absolute bottom-0 inset-x-0 w-full h-44 z-20 pointer-events-none" viewBox="0 0 400 170" preserveAspectRatio="none">
+                                <polygon points="0,170 200,55 400,170" fill="#FAF5EE" stroke="#C98A94" stroke-opacity="0.25" stroke-width="1"/>
+                            </svg>
+
+                            <!-- Dusty Rose Wax Seal -->
+                            <div class="wax-seal z-30 w-16 h-16 rounded-full bg-gradient-to-br from-dustyrose to-[#A86470] shadow-lg border-2 border-white/60 flex flex-col items-center justify-center text-white group-hover:scale-110 transition-transform">
+                                <span class="font-serif italic text-sm font-semibold tracking-wider">M&amp;S</span>
+                                <span class="text-[8px] uppercase tracking-widest opacity-85">Seal</span>
+                            </div>
+                        </div>
+
+                        <p class="font-serif italic text-base text-deepHaze mt-4 animate-pulse">
+                            Tap the wax seal to unfold Miyu’s letter...
+                        </p>
+                    </div>
+
+                    <!-- Opened Full Love Letter Container -->
+                    <div id="letter-content-wrapper" class="hidden transition-all duration-700">
+                        <div class="relative lined-paper rounded-3xl p-6 sm:p-12 shadow-xl border border-dustyrose/30 overflow-hidden">
+                            <!-- Decorative Washi Tape -->
+                            <div class="washi-tape -top-2 left-1/2 -translate-x-1/2"></div>
+
+                            <!-- Subtle Pressed Flower Ornament Top Right -->
+                            <div class="flex justify-between items-start border-b border-dustyrose/25 pb-4 mb-6">
+                                <div>
+                                    <span class="text-[11px] uppercase tracking-[0.22em] text-dustyrose block font-semibold">
+                                        ✦ Handwritten With Love ✦
+                                    </span>
+                                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-inkSoft mt-1">
+                                        Happy 14th Mensiversary Bebe!
+                                    </h2>
+                                </div>
+                                <div class="text-right text-xs font-serif italic text-deepHaze">
+                                    <span>22 December 2024</span>
+                                    <span class="block text-dustyrose">❀ ✧ ❀</span>
+                                </div>
+                            </div>
+
+                            <!-- Main Letter Body (Preserving exact Indonesian-English heartfelt wording) -->
+                            <div id="letter-paragraphs" class="space-y-6 text-inkSoft text-base sm:text-lg leading-relaxed font-serif">
+                                <p>
+                                    “Bebe terimakasih yaa karna udah selalu bareng sama aku dari dulu sampai sekarang udah selalu jadi rumah yang ternyaman buat aku, terimakasih udah selalu mau dengerin semua keluh kesah aku dari A-Z, terimakasih udah selalu make sure kalau aku bakal baik - baik aja, terimakasih udah gak biarin aku sendirian karena kamu tau aku paling takut kalau merasa sendirian, and thank you karena udah selalu menjadi PACAR YANG TERBAIK!
+                                </p>
+                                <p>
+                                    Bebe mungkin perjalanan kita tampak keliatan gak mudah tapi aku seneng karna kita masih mau tetap rangkul satu sama lain, masih mau bertahan, aku seneng karena sampai mau berganti tahun lagi aku bisa bareng sama kamu. Aku harap sampai tahun berikutnya kita masih tetap dengan keadaan seperti sekarang yaa, saling menemani dan saling sayang satu sama lain.
+                                </p>
+                                <p>
+                                    You know how much i love you than, i love you more than anything, thank you for coming and make me life better. Last but not least Happy Mensive Bebe &amp; I love you so much &lt;3”
+                                </p>
+                            </div>
+
+                            <!-- Handwritten Signature -->
+                            <div class="mt-10 pt-4 flex flex-col items-end text-right">
+                                <p class="font-hand text-2xl text-deepHaze">With all my love,</p>
+                                <p class="font-signature text-4xl sm:text-5xl text-dustyrose mt-1 pr-2">Miyu.</p>
+                            </div>
+
+                            <!-- Interactive Letter Action Buttons -->
+                            <div class="mt-8 pt-4 border-t border-dustyrose/20 flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <button type="button"
+                                            onclick="replayLoveLetter(event)"
+                                            class="px-4 py-2 rounded-full bg-white hover:bg-pastelpink/40 border border-dustyrose/30 text-xs font-medium text-inkSoft transition-all shadow-sm">
+                                         Read it again
+                                    </button>
+                                    <button type="button"
+                                            onclick="keepLetterClose(event)"
+                                            class="px-4 py-2 rounded-full bg-pastelpink/60 hover:bg-pastelpink border border-dustyrose/35 text-xs font-medium text-inkSoft transition-all shadow-sm">
+                                        ❦ Keep this letter close
+                                    </button>
+                                </div>
+                                <span id="letter-kept-toast" class="text-xs font-serif italic text-dustyrose opacity-0 transition-opacity duration-500">
+                                    Held safely in your heart ✦
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Two Romantic Landscape Photos (index 23.jpg & index 24.jpg) -->
+                        <div class="mt-10">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 px-2">
+                                <div>
+                                    <h3 class="font-serif italic text-2xl text-inkSoft font-semibold">
+                                        ✦ Two Little Frames of Us ✦
+                                    </h3>
+                                    <p class="text-xs text-deepHaze">
+                                        Drag or tap the frames to arrange them, or use the swap button.
+                                    </p>
+                                </div>
+                                <button type="button"
+                                        onclick="swapLetterPhotos(event)"
+                                        class="self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-white/85 hover:bg-white border border-powder text-xs text-deepHaze shadow-sm transition-all">
+                                    ⇄ Swap Photo Order
+                                </button>
+                            </div>
+
+                            <div id="letter-photos-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
+                                <!-- Landscape Photo 1: index 23.jpg -->
+                                <div class="polaroid-card rounded-2xl relative -rotate-2"
+                                     draggable="true"
+                                     data-letter-slot="0"
+                                     onclick="togglePolaroidZoom(this)">
+                                    <div class="washi-tape washi-tape-blue -top-3 left-1/2 -translate-x-1/2"></div>
+                                    <div class="aspect-video w-full overflow-hidden rounded-lg bg-babyblue/50 relative">
+                                        <img src="index 23.jpg"
+                                             alt="Romantic memory with Seji"
+                                             class="w-full h-full object-cover transition-transform duration-500"
+                                             onerror="handleMediaFallback(this, 'A Quiet Moment With You', 'landscape')">
+                                    </div>
+                                    <p class="font-hand text-xl sm:text-2xl text-center text-inkSoft mt-3">
+                                        “my favorite place is wherever you are.”
+                                    </p>
+                                </div>
+
+                                <!-- Landscape Photo 2: index 24.jpg -->
+                                <div class="polaroid-card rounded-2xl relative rotate-2"
+                                     draggable="true"
+                                     data-letter-slot="1"
+                                     onclick="togglePolaroidZoom(this)">
+                                    <div class="washi-tape -top-3 left-1/2 -translate-x-1/2"></div>
+                                    <div class="aspect-video w-full overflow-hidden rounded-lg bg-pastelpink/40 relative">
+                                        <img src="index 24.jpg"
+                                             alt="Cherished memory of Miyu and Seji"
+                                             class="w-full h-full object-cover transition-transform duration-500"
+                                             onerror="handleMediaFallback(this, 'Every Season With You', 'landscape')">
+                                    </div>
+                                    <p class="font-hand text-xl sm:text-2xl text-center text-inkSoft mt-3">
+                                        “another memory I would choose a thousand times.”
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- MENU 3: OUR LITTLE QUIZ — HOW WELL DO YOU KNOW US?            -->
+            <!-- ============================================================= -->
+            <section id="page-quiz" class="page-section">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <div class="paper-texture rounded-3xl p-6 sm:p-10 shadow-xl border border-white/90 relative">
+                        <div class="washi-tape washi-tape-lavender -top-2 left-1/2 -translate-x-1/2"></div>
+
+                        <!-- Quiz Header & Progress Dots -->
+                        <div class="text-center mb-6">
+                            <span class="text-xs uppercase tracking-[0.24em] text-dustyrose font-semibold">
+                                ❀ Scrapbook Memory Game ❀
+                            </span>
+                            <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-inkSoft mt-1">
+                                How Well Do You Know Us?
+                            </h2>
+                            <p class="text-xs sm:text-sm text-deepHaze mt-1">
+                                Answer all five little questions to unlock a special note from Miyu.
+                            </p>
+
+                            <!-- Progress Indicator & Status Pills -->
+                            <div class="mt-4 flex flex-col items-center gap-2">
+                                <span id="quiz-progress-label" class="text-xs font-serif italic text-deepHaze">
+                                    Question 1 of 5
+                                </span>
+                                <div id="quiz-dots-bar" class="flex items-center gap-2">
+                                    <!-- Dynamically updated 5 progress pills -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Quiz Card Layout: Accompanying Polaroid + Question Area -->
+                        <div class="stitched-blue rounded-2xl p-5 sm:p-7 bg-white/65 backdrop-blur-sm grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                            
+                            <!-- Left Column: Current Question's Paired Photo -->
+                            <div class="md:col-span-5 flex flex-col items-center">
+                                <div id="quiz-active-polaroid" class="polaroid-card rounded-2xl w-full max-w-xs -rotate-1" onclick="togglePolaroidZoom(this)">
+                                    <div class="aspect-[4/4] w-full overflow-hidden rounded-lg bg-powder/35 relative">
+                                        <img id="quiz-current-img"
+                                             src="index 1.jpg"
+                                             alt="Our Little Story Memory"
+                                             class="w-full h-full object-cover"
+                                             onerror="handleMediaFallback(this, 'Our Story Snapshot', 'square')">
+                                    </div>
+                                    <p id="quiz-polaroid-caption" class="font-hand text-xl text-center text-inkSoft mt-2.5">
+                                        Memory Snapshot I
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Question Content, Options / Password Input & Feedback -->
+                            <div class="md:col-span-7 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span id="quiz-q-badge" class="px-3 py-1 rounded-full bg-pastelpink/55 text-inkSoft text-xs font-medium">
+                                            Question 01
+                                        </span>
+                                        <span id="quiz-solved-badge" class="hidden text-xs text-dustyrose font-semibold">
+                                            ✦ Answered with love
+                                        </span>
+                                    </div>
+
+                                    <h3 id="quiz-question-title" class="font-serif text-2xl sm:text-3xl font-semibold text-inkSoft mt-3 leading-snug">
+                                        Kapan tanggal pertama kali kita chatan?
+                                    </h3>
+
+                                    <!-- Dynamic Options or Password Input Container -->
+                                    <div id="quiz-interaction-area" class="mt-5 space-y-2.5">
+                                        <!-- Populated via JS -->
+                                    </div>
+
+                                    <!-- Romantic Feedback Box -->
+                                    <div id="quiz-feedback-box" class="hidden mt-4 p-4 rounded-xl border text-sm transition-all">
+                                        <!-- Populated via JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Previous / Next Navigation Buttons -->
+                                <div class="mt-6 pt-4 border-t border-powder/60 flex items-center justify-between">
+                                    <button id="quiz-prev-btn"
+                                            type="button"
+                                            onclick="changeQuizQuestion(-1)"
+                                            class="px-4 py-2 rounded-full bg-white hover:bg-babyblue border border-powder text-xs font-medium text-inkSoft transition-all disabled:opacity-40 disabled:pointer-events-none">
+                                        ← Previous
+                                    </button>
+                                    <button id="quiz-next-btn"
+                                            type="button"
+                                            onclick="changeQuizQuestion(1)"
+                                            class="px-5 py-2 rounded-full bg-inkSoft hover:bg-dustyrose text-white text-xs font-medium transition-all shadow-sm">
+                                        Next Question →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Draggable / Swappable 5-Photo Strip -->
+                        <div class="mt-8 pt-6 border-t border-dustyrose/20">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+                                <p class="text-xs font-medium text-deepHaze">
+                                     Our 5 Quiz Keepsake Photos — Drag to swap positions, or tap two cards on mobile to trade places:
+                                </p>
+                                <button type="button"
+                                        onclick="shuffleQuizPhotos(event)"
+                                        class="self-start sm:self-auto text-xs text-dustyrose hover:underline">
+                                    ⇄ Shuffle Photo Order
+                                </button>
+                            </div>
+                            <div id="quiz-photo-strip" class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                                <!-- Rendered via JS with index 1.jpg to index 5.jpg -->
+                            </div>
+                        </div>
+
+                        <!-- Quiz Completion Secret Card (Unlocks when all 5 are solved) -->
+                        <div id="quiz-completion-card" class="hidden mt-8 bg-gradient-to-br from-pastelpink/70 via-pearl to-babyblue/70 rounded-2xl p-6 sm:p-8 border-2 border-dustyrose/40 shadow-lg text-center">
+                            <div class="w-12 h-12 rounded-full bg-white mx-auto flex items-center justify-center text-dustyrose shadow-sm mb-3 text-xl">
+                                ❦
+                            </div>
+                            <p class="text-xs uppercase tracking-[0.22em] text-dustyrose font-semibold">
+                                ✦ All Five Memories Unlocked ✦
+                            </p>
+                            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-inkSoft mt-1">
+                                “Congratulations, Seji. You know our little world by heart.”
+                            </h3>
+                            <p class="font-serif italic text-base sm:text-lg text-inkSoft/90 max-w-xl mx-auto mt-3">
+                                Bonus Note from Miyu: “Thank you for remembering every little detail about us, from our very first chat on 19 February 2023 to the day we became us on 22 December 2024. You just unlocked the Secret Corner!”
+                            </p>
+                            <div class="mt-5 flex flex-wrap justify-center gap-3">
+                                <button type="button"
+                                        onclick="switchTab('secret')"
+                                        class="px-6 py-2.5 rounded-full bg-dustyrose hover:bg-inkSoft text-white text-xs sm:text-sm font-medium shadow-md transition-all">
+                                    ✦ Visit Secret Corner Now
+                                </button>
+                                <button type="button"
+                                        onclick="switchTab('memories')"
+                                        class="px-6 py-2.5 rounded-full bg-white hover:bg-babyblue text-inkSoft border border-powder text-xs sm:text-sm font-medium shadow-sm transition-all">
+                                    Open Our Scrapbook →
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- MENU 4: MEMORIES — OUR DIGITAL SCRAPBOOK                      -->
+            <!-- ============================================================= -->
+            <section id="page-memories" class="page-section">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <div class="paper-texture rounded-3xl p-5 sm:p-9 shadow-xl border border-white/95 relative overflow-hidden">
+                        
+                        <!-- Top Scrapbook Navigation Header -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-dustyrose/20">
+                            <div>
+                                <span class="text-[11px] uppercase tracking-[0.22em] text-dustyrose font-semibold">
+                                    ✿ Our Digital Scrapbook &amp; Memory Journal ✿
+                                </span>
+                                <h2 class="font-serif text-2xl sm:text-4xl font-semibold text-inkSoft">
+                                    Pages of Miyu &amp; Seji
+                                </h2>
+                            </div>
+
+                            <!-- Page Spread Selector Pills -->
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <button type="button" onclick="goToScrapbookSpread(0)" class="spread-pill px-3 py-1 rounded-full text-xs font-medium bg-inkSoft text-white">1. Cover</button>
+                                <button type="button" onclick="goToScrapbookSpread(1)" class="spread-pill px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-inkSoft border border-powder">2. Pages I–II</button>
+                                <button type="button" onclick="goToScrapbookSpread(2)" class="spread-pill px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-inkSoft border border-powder">3. Pages III–IV</button>
+                                <button type="button" onclick="goToScrapbookSpread(3)" class="spread-pill px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-inkSoft border border-powder">4. Page V</button>
+                                <button type="button" onclick="goToScrapbookSpread(4)" class="spread-pill px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-inkSoft border border-powder">5. Video</button>
+                                <button type="button" onclick="goToScrapbookSpread(5)" class="spread-pill px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-inkSoft border border-powder">6. Our Canvas</button>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- SPREAD 0: SCRAPBOOK OPENING PAGE                  -->
+                        <!-- ================================================= -->
+                        <div id="spread-0" class="scrapbook-spread active-spread py-10 text-center">
+                            <div class="max-w-lg mx-auto stitched-border rounded-2xl p-8 bg-cream/80 shadow-inner relative">
+                                <div class="washi-tape -top-3 left-1/2 -translate-x-1/2"></div>
+                                <p class="text-xs uppercase tracking-[0.25em] text-deepHaze">Volume XIV &middot; Keepsake Edition</p>
+                                <h3 class="font-serif italic text-3xl sm:text-5xl text-inkSoft font-semibold mt-3">
+                                    A Collection of Little Forever Moments
+                                </h3>
+                                <p class="text-sm text-deepHaze mt-4 leading-relaxed">
+                                    Inside these pages are pieces of our story—polaroids you can hold and rearrange, a moving memory, and a blank page waiting for both of our hands.
+                                </p>
+                                <div class="my-6 flex justify-center items-center gap-3 text-dustyrose">
+                                    <span class="w-12 h-px bg-dustyrose/40"></span>
+                                    <span>❀ ✦ ❀</span>
+                                    <span class="w-12 h-px bg-dustyrose/40"></span>
+                                </div>
+                                <button type="button"
+                                        onclick="goToScrapbookSpread(1)"
+                                        class="px-7 py-3 rounded-full bg-inkSoft hover:bg-dustyrose text-white font-serif text-lg tracking-wide shadow-md transition-all">
+                                    Turn the First Page →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- SPREAD 1: FIRST TWO PHOTOS (index 6 & index 7)    -->
+                        <!-- ================================================= -->
+                        <div id="spread-1" class="scrapbook-spread py-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="font-hand text-2xl text-dustyrose">Chapter I — Where the warmth begins...</p>
+                                <button type="button" onclick="swapScrapbookPair(0, 1, event)" class="px-3 py-1 rounded-full bg-white border border-powder text-xs text-deepHaze shadow-sm">
+                                    ⇄ Swap These Two
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-2">
+                                <!-- Slot 0 -->
+                                <div class="scrapbook-photo-slot flex justify-center" data-sb-slot="0"></div>
+                                <!-- Slot 1 -->
+                                <div class="scrapbook-photo-slot flex justify-center" data-sb-slot="1"></div>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- SPREAD 2: NEXT TWO PHOTOS (index 8 & index 9)     -->
+                        <!-- ================================================= -->
+                        <div id="spread-2" class="scrapbook-spread py-6">
+                            <!-- Interlude Quote Banner -->
+                            <div class="mb-6 p-4 rounded-2xl bg-babyblue/50 border border-powder text-center">
+                                <p class="font-serif italic text-lg text-inkSoft">
+                                    “Some days are loud, some days are quiet, yet every single one with you feels like my favorite page.”
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="font-hand text-2xl text-deepHaze">Chapter II — Laughter we kept in our pockets...</p>
+                                <button type="button" onclick="swapScrapbookPair(2, 3, event)" class="px-3 py-1 rounded-full bg-white border border-powder text-xs text-deepHaze shadow-sm">
+                                    ⇄ Swap These Two
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-2">
+                                <!-- Slot 2 -->
+                                <div class="scrapbook-photo-slot flex justify-center" data-sb-slot="2"></div>
+                                <!-- Slot 3 -->
+                                <div class="scrapbook-photo-slot flex justify-center" data-sb-slot="3"></div>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- SPREAD 3: FIFTH PHOTO (index 10) + ALL 5 ARRANGE  -->
+                        <!-- ================================================= -->
+                        <div id="spread-3" class="scrapbook-spread py-6">
+                            <div class="text-center mb-4">
+                                <p class="font-hand text-2xl text-dustyrose">Chapter III — And still my heart chooses you...</p>
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <!-- Slot 4 -->
+                                <div class="scrapbook-photo-slot w-full max-w-md flex justify-center" data-sb-slot="4"></div>
+                            </div>
+
+                            <!-- Mini Reorder Tray for all 5 Memories -->
+                            <div class="mt-8 p-4 rounded-2xl bg-cream/90 border border-dustyrose/25">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-medium text-deepHaze">✦ Rearrange All 5 Album Polaroids (Tap any two to swap across pages):</span>
+                                    <span id="sb-swap-status" class="text-xs text-dustyrose italic font-serif">Select a card to move</span>
+                                </div>
+                                <div id="scrapbook-mini-tray" class="grid grid-cols-5 gap-2">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- SPREAD 4: VIDEO MEMORY PAGE (index 11.mp4)        -->
+                        <!-- ================================================= -->
+                        <div id="spread-4" class="scrapbook-spread py-6">
+                            <div class="max-w-2xl mx-auto text-center">
+                                <span class="text-xs uppercase tracking-[0.22em] text-deepHaze">✦ Moving Keepsake ✦</span>
+                                <h3 class="font-serif italic text-3xl sm:text-4xl font-semibold text-inkSoft mt-1">
+                                    A Memory That Moves
+                                </h3>
+                                <p class="text-xs sm:text-sm text-deepHaze mt-1 mb-5">
+                                    “Because some seconds with you are too precious to stay still.”
+                                </p>
+
+                                <!-- Framed Video Container -->
+                                <div class="relative bg-white p-3 sm:p-5 rounded-3xl shadow-xl border border-powder">
+                                    <div class="washi-tape -top-3 left-10 -rotate-3"></div>
+                                    <div class="washi-tape washi-tape-blue -top-3 right-10 rotate-3"></div>
+
+                                    <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-babyblue via-lavender/60 to-pastelpink flex items-center justify-center min-h-[240px] sm:min-h-[340px]">
+                                        
+                                        <!-- Video Element (index 11.mp4) -->
+                                        <video id="memory-video"
+                                               src="index 11.mov"
+                                               controls
+                                               playsinline
+                                               preload="metadata"
+                                               class="w-full max-h-[460px] object-contain rounded-xl relative z-10">
+                                            
+                                        </video>
+
+                                        <!-- Romantic Poster / Placeholder Overlay before Play -->
+                                        <div id="video-poster-overlay"
+                                             onclick="playMemoryVideo(event)"
+                                             class="absolute inset-0 z-20 bg-gradient-to-br from-[#E3EFFC]/95 via-[#F2EBF9]/95 to-[#FADCE2]/95 flex flex-col items-center justify-center p-6 cursor-pointer transition-opacity duration-500">
+                                            <div class="w-16 h-16 rounded-full bg-white/90 shadow-lg border border-dustyrose/40 flex items-center justify-center text-dustyrose hover:scale-110 transition-transform mb-3">
+                                                <svg class="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                            </div>
+                                            <p class="font-serif italic text-2xl text-inkSoft font-semibold">
+                                                Tap to Play Our Moving Memory
+                                            </p>
+                                            <p id="video-status-note" class="text-xs text-deepHaze mt-1">
+                                                Featuring our special moment &middot; Audio pauses gently while playing
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <p class="font-hand text-2xl text-inkSoft mt-4">
+                                        “A little piece of time I want to replay forever.”
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================================================= -->
+                        <!-- SPREAD 5: HANDWRITTEN NOTES & SIGNATURE CANVAS    -->
+                        <!-- ================================================= -->
+                        <div id="spread-5" class="scrapbook-spread py-6">
+                            <div class="text-center mb-5">
+                                <span class="text-xs uppercase tracking-[0.22em] text-dustyrose font-semibold">✦ Our Little Signature Book ✦</span>
+                                <h3 class="font-serif italic text-3xl sm:text-4xl font-semibold text-inkSoft mt-1">
+                                    “Leave a little piece of yourself here.”
+                                </h3>
+                                <p class="text-xs sm:text-sm text-deepHaze mt-1">
+                                    Draw a little heart, write your initials, or sign beside Miyu’s note—then save it as a keepsake PNG.
+                                </p>
+                            </div>
+
+                            <!-- Canvas Controls Toolbar -->
+                            <div class="bg-white/90 rounded-2xl p-3 sm:p-4 border border-powder shadow-sm mb-4 flex flex-wrap items-center justify-between gap-3">
+                                
+                                <!-- Pastel Pen Colors -->
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-medium text-deepHaze mr-1">Ink:</span>
+                                    <button type="button" onclick="setPenColor('#C98A94', this)" class="pen-swatch w-6 h-6 rounded-full bg-[#C98A94] ring-2 ring-offset-2 ring-inkSoft transition-transform" aria-label="Dusty Rose Ink"></button>
+                                    <button type="button" onclick="setPenColor('#6D8EB2', this)" class="pen-swatch w-6 h-6 rounded-full bg-[#6D8EB2] transition-transform" aria-label="Powder Blue Ink"></button>
+                                    <button type="button" onclick="setPenColor('#8A79AF', this)" class="pen-swatch w-6 h-6 rounded-full bg-[#8A79AF] transition-transform" aria-label="Soft Lavender Ink"></button>
+                                    <button type="button" onclick="setPenColor('#453F4E', this)" class="pen-swatch w-6 h-6 rounded-full bg-[#453F4E] transition-transform" aria-label="Charcoal Berry Ink"></button>
+                                    <button type="button" onclick="setPenColor('#7FA693', this)" class="pen-swatch w-6 h-6 rounded-full bg-[#7FA693] transition-transform" aria-label="Matcha Sage Ink"></button>
+                                </div>
+
+                                <!-- Brush Thickness -->
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-medium text-deepHaze">Size:</span>
+                                    <input id="pen-size-slider" type="range" min="1.5" max="10" step="0.5" value="3"
+                                           oninput="setPenSize(this.value)"
+                                           class="w-20 h-1.5 bg-powder rounded-lg accent-dustyrose cursor-pointer">
+                                </div>
+
+                                <!-- Canvas Actions: Stamp Heart, Undo, Clear, Download PNG -->
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button type="button" onclick="stampLittleHeart()" class="px-3 py-1.5 rounded-full bg-pastelpink/50 hover:bg-pastelpink text-xs text-inkSoft font-medium transition-colors">
+                                        ❦ Add Heart
+                                    </button>
+                                    <button type="button" onclick="undoCanvasStroke()" class="px-3 py-1.5 rounded-full bg-white hover:bg-babyblue border border-powder text-xs text-inkSoft transition-colors">
+                                        ↶ Undo
+                                    </button>
+                                    <button type="button" onclick="clearSignatureCanvas()" class="px-3 py-1.5 rounded-full bg-white hover:bg-pastelpink/40 border border-dustyrose/30 text-xs text-inkSoft transition-colors">
+                                        ✕ Clear
+                                    </button>
+                                    <button type="button" onclick="downloadSignaturePNG(event)" class="px-4 py-1.5 rounded-full bg-inkSoft hover:bg-dustyrose text-white text-xs font-medium shadow-sm transition-colors">
+                                        ↓ Save Keepsake PNG
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Scrapbook Drawing Paper Sheet -->
+                            <div class="relative rounded-2xl bg-[#FDFBF7] border-2 border-dustyrose/30 shadow-inner overflow-hidden">
+                                <!-- Guide labels for Miyu & Seji -->
+                                <div class="pointer-events-none absolute top-3 inset-x-4 flex justify-between items-center border-b border-dashed border-dustyrose/30 pb-2 z-10">
+                                    <span class="font-hand text-xl sm:text-2xl text-dustyrose">Miyu's little note</span>
+                                    <span class="text-[10px] uppercase tracking-widest text-deepHaze/70">22.12.2024 &middot; 14 Months</span>
+                                    <span class="font-hand text-xl sm:text-2xl text-deepHaze">A little space for Seji</span>
+                                </div>
+
+                                <canvas id="signature-canvas" class="w-full h-[320px] sm:h-[360px] block cursor-crosshair touch-none"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Scrapbook Page Turn Footer -->
+                        <div class="mt-6 pt-4 border-t border-dustyrose/20 flex items-center justify-between">
+                            <button id="sb-prev-btn"
+                                    type="button"
+                                    onclick="stepScrapbookSpread(-1)"
+                                    class="px-4 py-2 rounded-full bg-white hover:bg-babyblue border border-powder text-xs font-medium text-inkSoft transition-all disabled:opacity-40">
+                                ← Previous Page
+                            </button>
+                            <span id="sb-page-indicator" class="font-serif italic text-sm text-deepHaze">
+                                Page 1 of 6
+                            </span>
+                            <button id="sb-next-btn"
+                                    type="button"
+                                    onclick="stepScrapbookSpread(1)"
+                                    class="px-5 py-2 rounded-full bg-inkSoft hover:bg-dustyrose text-white text-xs font-medium transition-all shadow-sm">
+                                Next Page →
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================= -->
+            <!-- MENU 5: SECRET CORNER — A LITTLE SURPRISE                     -->
+            <!-- ============================================================= -->
+            <section id="page-secret" class="page-section">
+                <div class="max-w-3xl mx-auto">
+                    
+                    <div class="paper-texture rounded-3xl p-6 sm:p-12 shadow-xl border border-white/95 text-center relative overflow-hidden">
+                        <div class="washi-tape -top-2 left-12 -rotate-6"></div>
+                        <div class="washi-tape washi-tape-blue -top-2 right-12 rotate-6"></div>
+
+                        <!-- Locked State View (Before Quiz Completion or Hidden Star Discovery) -->
+                        <div id="secret-locked-view" class="py-8 max-w-lg mx-auto">
+                            <div class="w-16 h-16 rounded-full bg-pastelpink/50 border border-dustyrose/40 mx-auto flex items-center justify-center text-2xl text-dustyrose mb-4 shadow-inner">
+                                ❦
+                            </div>
+                            <span class="text-xs uppercase tracking-[0.24em] text-deepHaze font-semibold">
+                                ✦ A Hidden Keepsake Awaits ✦
+                            </span>
+                            <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-inkSoft mt-2">
+                                The Secret Corner
+                            </h2>
+                            <p class="text-sm sm:text-base text-deepHaze mt-3 leading-relaxed">
+                                This little corner holds a quiet confession meant for your eyes. Complete <strong>Our Little Quiz</strong> or touch the hidden star on the Home page to unlock the ribbon—or tap the keepsake key below if you can’t wait.
+                            </p>
+
+                            <div class="mt-6 flex flex-wrap justify-center gap-3">
+                                <button type="button"
+                                        onclick="switchTab('quiz')"
+                                        class="px-6 py-2.5 rounded-full bg-inkSoft hover:bg-dustyrose text-white text-xs sm:text-sm font-medium transition-all shadow-sm">
+                                    ❀ Play Our Little Quiz
+                                </button>
+                                <button type="button"
+                                        onclick="unlockSecretCorner(event, true)"
+                                        class="px-6 py-2.5 rounded-full bg-white hover:bg-pastelpink/50 border border-dustyrose/35 text-inkSoft text-xs sm:text-sm font-medium transition-all shadow-sm">
+                                    ✧ Unseal Secret Ribbon Now
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Unlocked Gift / Keepsake Box Stage -->
+                        <div id="secret-unlocked-view" class="hidden py-4">
+                            
+                            <!-- Unopened Ribbon Box Prompt -->
+                            <div id="secret-box-trigger" class="py-6 max-w-md mx-auto">
+                                <p class="text-xs uppercase tracking-[0.24em] text-dustyrose font-semibold mb-3">
+                                    ✦ Secret Keepsake Unlocked ✦
+                                </p>
+                                <button type="button"
+                                        onclick="revealSecretNotePaper(event)"
+                                        class="group relative w-48 h-48 mx-auto rounded-3xl bg-gradient-to-br from-pastelpink via-cream to-babyblue border-2 border-white shadow-xl flex flex-col items-center justify-center p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl focus:outline-none">
+                                    <!-- Decorative Ribbon Cross -->
+                                    <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-5 bg-dustyrose/35"></div>
+                                    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-5 bg-dustyrose/35"></div>
+                                    <div class="relative z-10 w-16 h-16 rounded-full bg-white shadow-md flex items-center justify-center text-dustyrose text-2xl group-hover:rotate-12 transition-transform">
+                                        ❦
+                                    </div>
+                                    <span class="relative z-10 mt-3 px-3 py-1 rounded-full bg-white/90 text-xs font-serif italic text-inkSoft shadow-sm">
+                                        Tap to untie the ribbon
+                                    </span>
+                                </button>
+                            </div>
+
+                            <!-- Revealed Secret Message Card -->
+                            <div id="secret-message-paper" class="hidden max-w-2xl mx-auto stitched-border rounded-3xl p-6 sm:p-10 bg-cream/95 shadow-inner text-center transition-all duration-700">
+                                <span class="text-xs uppercase tracking-[0.25em] text-dustyrose font-semibold">
+                                    ✧ From Miyu’s Heart to Seji ✧
+                                </span>
+
+                                <blockquote class="font-serif italic text-2xl sm:text-3xl text-inkSoft leading-relaxed mt-5">
+                                    “If I could give you one thing in this life, I would give you the ability to see yourself through my eyes. Maybe then you'd understand how special you are to me.”
+                                </blockquote>
+
+                                <div class="my-6 flex items-center justify-center gap-3 text-dustyrose/70">
+                                    <span class="w-16 h-px bg-dustyrose/35"></span>
+                                    <span>❀ ❦ ❀</span>
+                                    <span class="w-16 h-px bg-dustyrose/35"></span>
+                                </div>
+
+                                <p class="font-serif text-lg sm:text-xl text-deepHaze leading-relaxed">
+                                    “Thank you for being my home, Bebe. Here's to more months, more memories, and more reasons to choose each other.”
+                                </p>
+
+                                <p class="font-signature text-4xl text-dustyrose mt-6">
+                                    Forever yours, Miyu
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ================================================================= -->
+        <!-- ROMANTIC EPILOGUE FOOTER                                          -->
+        <!-- ================================================================= -->
+        <footer class="relative z-10 mt-12 py-8 px-4 border-t border-dustyrose/20 bg-pearl/70 backdrop-blur-sm text-center">
+            <p class="font-serif italic text-xl sm:text-2xl text-inkSoft font-medium">
+                “You are, and will always be, my favorite story.”
+            </p>
+            <p class="text-[11px] uppercase tracking-[0.24em] text-deepHaze mt-2">
+                ✦ Happy 14th Mensiversary, Seji &middot; Made with love by Miyu &middot; 22.12.2024 ✦
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT: INTERACTIVITY, STATE, AUDIO, QUIZ, SCRAPBOOK & CANVAS     -->
+    <!-- ===================================================================== -->
+    <script>
+        /* =====================================================================
+         * 1. APPLICATION DATA & STATE
+         * ===================================================================== */
+        const APP_STATE = {
+            currentTab: 'home',
+            musicPlaying: false,
+            musicInitialized: false,
+            discoveredLights: new Set(),
+            secretUnlocked: false,
+            secretBoxOpened: false,
+            reminderIndex: 0,
+            currentQuizIndex: 0,
+            selectedQuizPhotoSwapIndex: null,
+            selectedScrapbookSwapIndex: null,
+            currentScrapbookSpread: 0
+        };
+
+        // 5 Romantic Quotes for the Intro Lights
+        const INTRO_LIGHT_QUOTES = [
+            "“You are my favorite place to come home to.”",
+            "“In every lifetime, I hope I find you again.”",
+            "“You make the little things feel extraordinary.”",
+            "“If I had to choose again, it would still be you.”",
+            "“Fourteen months, countless memories, and one heart that keeps choosing you.”"
+        ];
+
+        // 4 Rotating Gentle Reminders on the Home Page
+        const HOME_REMINDERS = [
+            "“Whenever the world feels a little too heavy, remember that you always have a gentle place to rest right here with me. You are deeply loved, today and every day after.”",
+            "“Thank you for listening to every little story from A to Z, and for never letting me feel alone.”",
+            "“Fourteen months have passed, and you are still the person my heart looks for first in every room.”",
+            "“No matter what season we walk through next, I’m so grateful that I get to hold your hand through it all, Bebe.”"
+        ];
+
+        // 5 Quiz Photos (Using exact required local filenames)
+        const QUIZ_PHOTOS = [
+            { src: "index 1.jpg", label: "First Hello", fallbackTitle: "19.02.2023 · Where We Began" },
+            { src: "index 2.jpg", label: "Sweet Favorites", fallbackTitle: "Matcha & Little Smiles" },
+            { src: "index 3.jpg", label: "Falling First", fallbackTitle: "Two Hearts Growing Closer" },
+            { src: "index 4.jpg", label: "Our Special Date", fallbackTitle: "22.12.2024 · Officially Us" },
+            { src: "index 5.jpg", label: "Always You", fallbackTitle: "My Favorite Person, Always" }
+        ];
+
+        // 5 Quiz Questions with exact logic & feedback
+        const QUIZ_QUESTIONS = [
+            {
+                number: 1,
+                question: "Kapan tanggal pertama kali kita chatan?",
+                type: "choice",
+                options: [
+                    "19 Februari 2023",
+                    "14 Februari 2023",
+                    "19 Maret 2023"
+                ],
+                correctAnswer: "19 Februari 2023",
+                correctFeedback: "“You remember the day our little story began.”",
+                wrongFeedback: "Almost, Bebe! Think back to that sweet day in February 2023...",
+                solved: false,
+                selectedChoice: null
+            },
+            {
+                number: 2,
+                question: "Apa hal yang paling Miyu sukak?",
+                type: "choice",
+                options: [
+                    "Strawberry",
+                    "Matcha",
+                    "Chocolate"
+                ],
+                correctAnswer: "Matcha",
+                correctFeedback: "“You know your girl so well.”",
+                wrongFeedback: "Hehe not quite! Hint: it’s green, earthy, and Miyu’s absolute favorite.",
+                solved: false,
+                selectedChoice: null
+            },
+            {
+                number: 3,
+                question: "Siapa duluan yang suka?",
+                type: "choice",
+                options: [
+                    "Seji",
+                    "Miyu",
+                    "Sama-sama duluan"
+                ],
+                correctAnswer: "Miyu",
+                correctFeedback: "“Someone fell first, and look where we are now.”",
+                wrongFeedback: "Hehe, be honest! Who fell first for the other?",
+                solved: false,
+                selectedChoice: null
+            },
+            {
+                number: 4,
+                question: "Kapan tanggal jadian kita?",
+                type: "password",
+                placeholder: "Enter our special date...",
+                correctAnswer: "22-12-2024",
+                correctFeedback: "“You unlocked the day we officially became us.”",
+                wrongFeedback: "Not quite right yet, Bebe. Try entering our special date in DD-MM-YYYY format (22-12-2024).",
+                solved: false,
+                enteredValue: ""
+            },
+            {
+                number: 5,
+                question: "Siapa yang paling kamu suka? Aku atau Makima?",
+                type: "choice",
+                options: [
+                    "Aku (Miyu), of course.",
+                    "Makima."
+                ],
+                correctAnswer: "Aku (Miyu), of course.",
+                correctFeedback: "“That's the only answer I wanted to hear, Bebe.”",
+                wrongFeedback: "“Bebe, excuse me? You might want to reconsider that answer.”",
+                solved: false,
+                selectedChoice: null
+            }
+        ];
+
+        // 5 Scrapbook Photos (index 6.jpg to index 10.jpg)
+        const SCRAPBOOK_PHOTOS = [
+            {
+                src: "index 6.jpg",
+                caption: "“In the quiet moments, it is always your hand I want to hold.”",
+                note: "Keep I · Warmth",
+                rotation: "-rotate-2",
+                tapeClass: "washi-tape"
+            },
+            {
+                src: "index 7.jpg",
+                caption: "“Every little laugh with you turns into my favorite memory.”",
+                note: "Keep II · Laughter",
+                rotation: "rotate-2",
+                tapeClass: "washi-tape washi-tape-blue"
+            },
+            {
+                src: "index 8.jpg",
+                caption: "“Even ordinary days feel soft and magical when you are near.”",
+                note: "Keep III · Soft Days",
+                rotation: "-rotate-1",
+                tapeClass: "washi-tape washi-tape-lavender"
+            },
+            {
+                src: "index 9.jpg",
+                caption: "“Thank you for always making sure I feel safe and loved.”",
+                note: "Keep IV · My Safe Place",
+                rotation: "rotate-3",
+                tapeClass: "washi-tape"
+            },
+            {
+                src: "index 10.jpg",
+                caption: "“Fourteen months in, and I still fall for you a little more each day.”",
+                note: "Keep V · Fourteen Months",
+                rotation: "-rotate-1",
+                tapeClass: "washi-tape washi-tape-blue"
+            }
+        ];
+
+        function handleMediaFallback(imgEl, titleText, aspectType) {
+            // Prevents infinite loop
+            imgEl.onerror = null;
+            const width = aspectType === 'landscape' ? 800 : 600;
+            const height = aspectType === 'landscape' ? 450 : 600;
+            const svgString = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+                    <defs>
+                        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#E6F1FC"/>
+                            <stop offset="50%" stop-color="#E6E0F8"/>
+                            <stop offset="100%" stop-color="#FADADD"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#bg)"/>
+                    <rect x="24" y="24" width="${width - 48}" height="${height - 48}" rx="16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="8 8"/>
+                    <path d="M ${width/2} ${height/2 - 25} C ${width/2 - 22} ${height/2 - 52}, ${width/2 - 58} ${height/2 - 18}, ${width/2} ${height/2 + 24} C ${width/2 + 58} ${height/2 - 18}, ${width/2 + 22} ${height/2 - 52}, ${width/2} ${height/2 - 25} Z" fill="#FFFFFF" fill-opacity="0.82" stroke="#C98A94" stroke-width="2"/>
+                    <text x="50%" y="${height/2 + 65}" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="22" fill="#4A4453">${titleText}</text>
+                    <text x="50%" y="${height/2 + 94}" text-anchor="middle" font-family="sans-serif" font-size="12" letter-spacing="3" fill="#766E82">MIYU &amp; SEJI · 22.12.2024</text>
+                </svg>
+            `;
+            imgEl.src = "data:image/svg+xml;utf8," + encodeURIComponent(svgString.trim());
+        }
+
+        function createSparkleBurst(x, y, count = 8) {
+            const symbols = ['✦', '✧', '❀', '✿', '·'];
+            const colors = ['#C98A94', '#9BB8D8', '#D8B4E2', '#FFF5F7', '#B39CD0'];
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('span');
+                el.className = 'sparkle-particle font-serif select-none';
+                el.textContent = symbols[i % symbols.length];
+                const angle = (Math.PI * 2 * i) / count + (Math.random() * 0.5 - 0.25);
+                const distance = 28 + Math.random() * 48;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                el.style.color = colors[i % colors.length];
+                el.style.fontSize = `${12 + Math.random() * 10}px`;
+                el.style.setProperty('--tx', `${tx}px`);
+                el.style.setProperty('--ty', `${ty}px`);
+
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 960);
+            }
+        }
+
+        // Ambient Floating Starlight Canvas
+        function initAmbientCanvas() {
+            const canvas = document.getElementById('ambient-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const particleCount = window.innerWidth < 640 ? 22 : 40;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: 1 + Math.random() * 2.2,
+                    vx: (Math.random() - 0.5) * 0.25,
+                    vy: -0.15 - Math.random() * 0.25,
+                    alpha: 0.25 + Math.random() * 0.55,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (const p of particles) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.phase += 0.02;
+                    if (p.y < -10) p.y = canvas.height + 10;
+                    if (p.x < -10) p.x = canvas.width + 10;
+                    if (p.x > canvas.width + 10) p.x = -10;
+
+                    const glowAlpha = p.alpha * (0.65 + 0.35 * Math.sin(p.phase));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${glowAlpha})`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function initIntroScreen() {
+            const orbs = document.querySelectorAll('.light-orb');
+            const quoteText = document.getElementById('intro-quote-text');
+            const counterEl = document.getElementById('intro-light-counter');
+            const pathEl = document.getElementById('constellation-path');
+            const secretBanner = document.getElementById('constellation-secret-banner');
+            const crownEl = document.getElementById('constellation-crown');
+
+            orbs.forEach((orb) => {
+                orb.addEventListener('click', (e) => {
+                    const idx = parseInt(orb.getAttribute('data-index'), 10);
+                    const rect = orb.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+
+                    // Create light ripple & sparkles
+                    const ripple = document.createElement('span');
+                    ripple.className = 'orb-ripple';
+                    orb.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 1000);
+                    createSparkleBurst(cx, cy, 10);
+
+                    // Try starting music gently on first interaction
+                    tryStartMusicOnInteraction();
+
+                    orb.classList.add('discovered');
+                    APP_STATE.discoveredLights.add(idx);
+
+                    // Animate quote text
+                    quoteText.style.opacity = '0';
+                    setTimeout(() => {
+                        quoteText.textContent = INTRO_LIGHT_QUOTES[idx];
+                        quoteText.style.opacity = '1';
+                    }, 180);
+
+                    // Update progress & constellation line
+                    const count = APP_STATE.discoveredLights.size;
+                    counterEl.textContent = `✦ ${count} of 5 Little Lights Discovered ✦`;
+
+                    // Progressively draw the heart constellation
+                    const dashOffset = 260 - (count / 5) * 260;
+                    pathEl.style.strokeDashoffset = `${dashOffset}`;
+
+                    if (count === 5) {
+                        pathEl.setAttribute('fill', 'rgba(250, 218, 221, 0.22)');
+                        crownEl.classList.remove('opacity-40');
+                        crownEl.classList.add('opacity-100', 'scale-125');
+                        secretBanner.classList.remove('hidden');
+                    }
+                });
+            });
+
+            document.getElementById('enter-world-btn').addEventListener('click', (e) => {
+                createSparkleBurst(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, 14);
+                tryStartMusicOnInteraction();
+
+                const introScreen = document.getElementById('intro-screen');
+                const appShell = document.getElementById('main-app-shell');
+
+                introScreen.classList.add('opacity-0', 'pointer-events-none', 'scale-105');
+                appShell.classList.remove('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    resizeSignatureCanvas();
+                }, 950);
+            });
+        }
+
+        // Background Music Controller (`lagu 1.mp3`)
+        function tryStartMusicOnInteraction() {
+            if (APP_STATE.musicInitialized) return;
+            const audio = document.getElementById('bg-music');
+            if (!audio) return;
+
+            audio.volume = parseFloat(document.getElementById('volume-slider')?.value || '0.7');
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    APP_STATE.musicInitialized = true;
+                    APP_STATE.musicPlaying = true;
+                    updateMusicUI(true);
+                }).catch(() => {
+                    // Browser blocked or local file not placed yet; fail silently without intrusive error
+                    updateMusicUI(false);
+                });
+            }
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            if (!audio) return;
+
+            if (audio.paused) {
+                audio.play().then(() => {
+                    APP_STATE.musicInitialized = true;
+                    APP_STATE.musicPlaying = true;
+                    updateMusicUI(true);
+                }).catch(() => {
+                    // Provide gentle status if lagu 1.mp3 is not yet in folder
+                    updateMusicUI(false, "Ready (lagu 1.mp3)");
+                });
+            } else {
+                audio.pause();
+                APP_STATE.musicPlaying = false;
+                updateMusicUI(false);
+            }
+        }
+
+        function updateMusicUI(isPlaying, customLabel) {
+            const containers = document.querySelectorAll('.music-toggle-ui');
+            containers.forEach((btn) => {
+                const wave = btn.querySelector('.soundwave-indicator');
+                const label = btn.querySelector('.music-label-text');
+                if (isPlaying) {
+                    wave?.classList.add('playing');
+                    if (label) label.textContent = 'Playing';
+                } else {
+                    wave?.classList.remove('playing');
+                    if (label) label.textContent = customLabel || 'Paused';
+                }
+            });
+        }
+
+        document.getElementById('volume-slider')?.addEventListener('input', (e) => {
+            const audio = document.getElementById('bg-music');
+            if (audio) {
+                audio.volume = parseFloat(e.target.value);
+            }
+        });
+
+        function switchTab(tabId) {
+            APP_STATE.currentTab = tabId;
+
+            // Update Navigation Tab styles
+            document.querySelectorAll('.nav-tab-btn').forEach((btn) => {
+                const isTarget = btn.getAttribute('data-tab') === tabId;
+                if (isTarget) {
+                    btn.classList.add('bg-inkSoft', 'text-white', 'shadow-sm');
+                    btn.classList.remove('text-inkSoft', 'hover:bg-white/70');
+                } else {
+                    btn.classList.remove('bg-inkSoft', 'text-white', 'shadow-sm');
+                    btn.classList.add('text-inkSoft', 'hover:bg-white/70');
+                }
+            });
+
+            // Switch active page section smoothly
+            document.querySelectorAll('.page-section').forEach((sec) => {
+                sec.classList.remove('active-page');
+            });
+
+            const targetSection = document.getElementById(`page-${tabId}`);
+            if (targetSection) {
+                targetSection.classList.add('active-page');
+            }
+
+            if (tabId === 'memories') {
+                setTimeout(() => resizeSignatureCanvas(), 120);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Relationship Counter since 22 December 2024 (22.12.2024)
+        function updateRelationshipCounter() {
+            const startDate = new Date(2024, 11, 22, 0, 0, 0); // Dec 22, 2024
+            const now = new Date();
+            const diffMs = Math.max(0, now - startDate);
+
+            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            // Calculate exact months + remaining days
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth() + (years * 12);
+            let dayOfMonthNow = now.getDate();
+            let dayOfMonthStart = startDate.getDate();
+
+            if (dayOfMonthNow < dayOfMonthStart) {
+                months -= 1;
+                const prevMonthLastDay = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                dayOfMonthNow += prevMonthLastDay;
+            }
+            const remDays = Math.max(0, dayOfMonthNow - dayOfMonthStart);
+            const hours = now.getHours();
+
+            document.getElementById('counter-total-days').textContent = totalDays.toLocaleString();
+            document.getElementById('counter-months').textContent = Math.max(0, months);
+            document.getElementById('counter-days-rem').textContent = remDays;
+            document.getElementById('counter-hours').textContent = hours;
+        }
+
+        function cycleReminderNote(e) {
+            if (e) createSparkleBurst(e.clientX, e.clientY, 6);
+            APP_STATE.reminderIndex = (APP_STATE.reminderIndex + 1) % HOME_REMINDERS.length;
+            const noteEl = document.getElementById('reminder-note-text');
+            const badgeEl = document.getElementById('reminder-index-badge');
+
+            noteEl.style.opacity = '0';
+            setTimeout(() => {
+                noteEl.textContent = HOME_REMINDERS[APP_STATE.reminderIndex];
+                badgeEl.textContent = `${APP_STATE.reminderIndex + 1} / ${HOME_REMINDERS.length}`;
+                noteEl.style.opacity = '1';
+            }, 200);
+        }
+
+        function triggerHiddenKeepsake(e) {
+            if (e) createSparkleBurst(e.clientX, e.clientY, 12);
+            const hint = document.getElementById('easter-egg-hint');
+            if (hint) {
+                hint.textContent = "✦ Secret Keepsake Found! The Secret Corner is now unlocked for you, Seji ✦";
+                hint.classList.add('text-dustyrose', 'font-semibold');
+            }
+            unlockSecretCorner(e, false);
+        }
+
+        function openLoveLetter(e) {
+            if (e) {
+                const rect = e.currentTarget.getBoundingClientRect();
+                createSparkleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 14);
+            }
+            const envelope = document.getElementById('interactive-envelope');
+            const stage = document.getElementById('envelope-stage');
+            const letterWrapper = document.getElementById('letter-content-wrapper');
+
+            envelope.classList.add('envelope-open');
+            setTimeout(() => {
+                stage.classList.add('hidden');
+                letterWrapper.classList.remove('hidden');
+            }, 680);
+        }
+
+        function replayLoveLetter(e) {
+            if (e) createSparkleBurst(e.clientX, e.clientY, 8);
+            const envelope = document.getElementById('interactive-envelope');
+            const stage = document.getElementById('envelope-stage');
+            const letterWrapper = document.getElementById('letter-content-wrapper');
+
+            letterWrapper.classList.add('hidden');
+            envelope.classList.remove('envelope-open');
+            stage.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function keepLetterClose(e) {
+            if (e) createSparkleBurst(e.clientX, e.clientY, 12);
+            const toast = document.getElementById('letter-kept-toast');
+            if (toast) {
+                toast.style.opacity = '1';
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                }, 3500);
+            }
+        }
+
+        function togglePolaroidZoom(cardEl) {
+            cardEl.classList.toggle('touched-zoom');
+        }
+
+        function swapLetterPhotos(e) {
+            if (e) createSparkleBurst(e.clientX, e.clientY, 8);
+            const grid = document.getElementById('letter-photos-grid');
+            if (!grid || grid.children.length < 2) return;
+            grid.insertBefore(grid.children[1], grid.children[0]);
+        }
+
+        // Drag and Drop support for the two Love Letter landscape photos
+        function initLetterPhotoDrag() {
+            const grid = document.getElementById('letter-photos-grid');
+            if (!grid) return;
+            let draggedEl = null;
+
+            grid.querySelectorAll('.polaroid-card').forEach((card) => {
+                card.addEventListener('dragstart', () => {
+                    draggedEl = card;
+                    card.classList.add('dragging');
+                });
+                card.addEventListener('dragend', () => {
+                    card.classList.remove('dragging');
+                    draggedEl = null;
+                });
+                card.addEventListener('dragover', (e) => e.preventDefault());
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (draggedEl && draggedEl !== card) {
+                        swapLetterPhotos();
+                    }
+                });
+            });
+        }
+
+        function renderQuizQuestion() {
+            const q = QUIZ_QUESTIONS[APP_STATE.currentQuizIndex];
+            const photo = QUIZ_PHOTOS[APP_STATE.currentQuizIndex];
+
+            // Progress label & dots
+            document.getElementById('quiz-progress-label').textContent = `Question ${APP_STATE.currentQuizIndex + 1} of ${QUIZ_QUESTIONS.length}`;
+            const dotsContainer = document.getElementById('quiz-dots-bar');
+            dotsContainer.innerHTML = '';
+            QUIZ_QUESTIONS.forEach((item, idx) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.onclick = () => {
+                    APP_STATE.currentQuizIndex = idx;
+                    renderQuizQuestion();
+                };
+                dot.className = `h-2.5 rounded-full transition-all ${
+                    idx === APP_STATE.currentQuizIndex
+                        ? 'w-8 bg-dustyrose'
+                        : item.solved
+                        ? 'w-2.5 bg-powder border border-dustyrose'
+                        : 'w-2.5 bg-silverblue/50'
+                }`;
+                dot.setAttribute('aria-label', `Go to question ${idx + 1}`);
+                dotsContainer.appendChild(dot);
+            });
+
+            // Update paired Polaroid photo
+            const imgEl = document.getElementById('quiz-current-img');
+            imgEl.onerror = function() {
+                handleMediaFallback(this, photo.fallbackTitle, 'square');
+            };
+            imgEl.src = photo.src;
+            document.getElementById('quiz-polaroid-caption').textContent = photo.label;
+
+            // Update Question Header & Solved status
+            document.getElementById('quiz-q-badge').textContent = `Question 0${q.number}`;
+            const solvedBadge = document.getElementById('quiz-solved-badge');
+            if (q.solved) {
+                solvedBadge.classList.remove('hidden');
+            } else {
+                solvedBadge.classList.add('hidden');
+            }
+
+            document.getElementById('quiz-question-title').textContent = q.question;
+
+            // Render Options or Password Input
+            const area = document.getElementById('quiz-interaction-area');
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            area.innerHTML = '';
+            feedbackBox.className = 'hidden mt-4 p-4 rounded-xl border text-sm transition-all';
+
+            if (q.type === 'choice') {
+                q.options.forEach((optText) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    const isSelected = q.selectedChoice === optText;
+                    const isCorrectChoice = optText === q.correctAnswer;
+
+                    let baseStyle = 'w-full text-left px-5 py-3.5 rounded-xl border text-sm sm:text-base font-medium transition-all flex items-center justify-between ';
+                    if (isSelected && isCorrectChoice) {
+                        baseStyle += 'bg-pastelpink/70 border-dustyrose text-inkSoft shadow-sm';
+                    } else if (isSelected && !isCorrectChoice) {
+                        baseStyle += 'bg-cream border-dustyrose/50 text-deepHaze';
+                    } else {
+                        baseStyle += 'bg-white/90 hover:bg-babyblue/50 border-powder text-inkSoft';
+                    }
+
+                    btn.className = baseStyle;
+                    btn.innerHTML = `
+                        <span>${optText}</span>
+                        <span class="text-dustyrose">${isSelected ? (isCorrectChoice ? '✦' : '✧') : '○'}</span>
+                    `;
+                    btn.onclick = (e) => handleChoiceAnswer(q, optText, e);
+                    area.appendChild(btn);
+                });
+            } else if (q.type === 'password') {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'space-y-3';
+                wrapper.innerHTML = `
+                    <div class="relative flex items-center">
+                        <input id="quiz-pwd-input"
+                               type="password"
+                               value="${q.enteredValue}"
+                               placeholder="${q.placeholder}"
+                               maxlength="10"
+                               class="w-full px-4 py-3.5 rounded-xl bg-white border border-powder focus:border-dustyrose focus:outline-none text-inkSoft tracking-widest text-sm sm:text-base pr-24" />
+                        <button type="button"
+                                onclick="toggleQuizPasswordVisibility()"
+                                class="absolute right-3 px-2.5 py-1 rounded-lg bg-babyblue/60 text-[11px] text-deepHaze hover:text-inkSoft">
+                            Peek
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-[11px] text-deepHaze italic">Format: DD-MM-YYYY</span>
+                        <button type="button"
+                                onclick="submitPasswordQuestion(event)"
+                                class="px-5 py-2.5 rounded-full bg-dustyrose hover:bg-inkSoft text-white text-xs sm:text-sm font-medium shadow-sm transition-all">
+                            ❦ Unlock Our Date
+                        </button>
+                    </div>
+                `;
+                area.appendChild(wrapper);
+
+                // Allow Enter key submission
+                setTimeout(() => {
+                    const inputEl = document.getElementById('quiz-pwd-input');
+                    if (inputEl) {
+                        inputEl.addEventListener('keydown', (ev) => {
+                            if (ev.key === 'Enter') submitPasswordQuestion(ev);
+                        });
+                    }
+                }, 20);
+            }
+
+            // Show feedback if already answered
+            if (q.solved) {
+                showQuizFeedback(true, q.correctFeedback);
+            } else if (q.selectedChoice && q.selectedChoice !== q.correctAnswer) {
+                showQuizFeedback(false, q.wrongFeedback);
+            }
+
+            // Update Prev / Next buttons
+            document.getElementById('quiz-prev-btn').disabled = APP_STATE.currentQuizIndex === 0;
+            const nextBtn = document.getElementById('quiz-next-btn');
+            nextBtn.textContent = APP_STATE.currentQuizIndex === QUIZ_QUESTIONS.length - 1 ? 'First Question ↺' : 'Next Question →';
+
+            renderQuizPhotoStrip();
+            checkAllQuizCompleted();
+        }
+
+        function handleChoiceAnswer(q, selectedText, e) {
+            q.selectedChoice = selectedText;
+            if (selectedText === q.correctAnswer) {
+                q.solved = true;
+                if (e) createSparkleBurst(e.clientX, e.clientY, 12);
+                showQuizFeedback(true, q.correctFeedback);
+            } else {
+                showQuizFeedback(false, q.wrongFeedback);
+            }
+            renderQuizQuestion();
+        }
+
+        function toggleQuizPasswordVisibility() {
+            const input = document.getElementById('quiz-pwd-input');
+            if (!input) return;
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function submitPasswordQuestion(e) {
+            const input = document.getElementById('quiz-pwd-input');
+            if (!input) return;
+            const q = QUIZ_QUESTIONS[3];
+            const cleaned = input.value.trim();
+            q.enteredValue = cleaned;
+
+            if (cleaned === q.correctAnswer) {
+                q.solved = true;
+                if (e) createSparkleBurst(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, 16);
+                renderQuizQuestion();
+                showQuizFeedback(true, `❦ Heart Lock Opened! ${q.correctFeedback}`);
+            } else {
+                showQuizFeedback(false, q.wrongFeedback);
+            }
+        }
+
+        function showQuizFeedback(isCorrect, message) {
+            const box = document.getElementById('quiz-feedback-box');
+            if (!box) return;
+            box.classList.remove('hidden');
+            if (isCorrect) {
+                box.className = 'mt-4 p-4 rounded-xl border border-dustyrose/45 bg-pastelpink/45 text-inkSoft font-serif italic text-base sm:text-lg';
+            } else {
+                box.className = 'mt-4 p-4 rounded-xl border border-powder bg-babyblue/50 text-deepHaze font-serif italic text-base';
+            }
+            box.textContent = message;
+        }
+
+        function changeQuizQuestion(delta) {
+            const total = QUIZ_QUESTIONS.length;
+            APP_STATE.currentQuizIndex = (APP_STATE.currentQuizIndex + delta + total) % total;
+            renderQuizQuestion();
+        }
+
+        function checkAllQuizCompleted() {
+            const allSolved = QUIZ_QUESTIONS.every((q) => q.solved);
+            const rewardCard = document.getElementById('quiz-completion-card');
+            if (allSolved) {
+                rewardCard.classList.remove('hidden');
+                unlockSecretCorner(null, false);
+            }
+        }
+
+        // Render & allow swapping the 5 Quiz Photos (Mouse Drag & Touch Tap-to-Swap)
+        function renderQuizPhotoStrip() {
+            const strip = document.getElementById('quiz-photo-strip');
+            if (!strip) return;
+            strip.innerHTML = '';
+
+            QUIZ_PHOTOS.forEach((item, idx) => {
+                const card = document.createElement('div');
+                const isCurrent = idx === APP_STATE.currentQuizIndex;
+                const isSelectedForSwap = idx === APP_STATE.selectedQuizPhotoSwapIndex;
+
+                card.className = `polaroid-card p-2 rounded-xl text-center cursor-pointer transition-all ${
+                    isCurrent ? 'ring-2 ring-dustyrose' : ''
+                } ${isSelectedForSwap ? 'ring-2 ring-inkSoft scale-105 bg-pastelpink/30' : ''}`;
+                card.draggable = true;
+
+                card.innerHTML = `
+                    <div class="aspect-square w-full overflow-hidden rounded-lg bg-babyblue/40">
+                        <img src="${item.src}" alt="${item.label}" class="w-full h-full object-cover">
+                    </div>
+                    <span class="block font-hand text-base text-inkSoft mt-1 truncate">Q${idx + 1} · ${item.label}</span>
+                `;
+
+                const img = card.querySelector('img');
+                img.onerror = function() {
+                    handleMediaFallback(this, item.fallbackTitle, 'square');
+                };
+
+                // Drag events
+                card.addEventListener('dragstart', (ev) => {
+                    ev.dataTransfer.setData('text/plain', idx.toString());
+                });
+                card.addEventListener('dragover', (ev) => ev.preventDefault());
+                card.addEventListener('drop', (ev) => {
+                    ev.preventDefault();
+                    const fromIdx = parseInt(ev.dataTransfer.getData('text/plain'), 10);
+                    if (!isNaN(fromIdx) && fromIdx !== idx) {
+                        swapQuizPhotoItems(fromIdx, idx);
+                    }
+                });
+
+                // Touch / Click to swap or preview
+                card.addEventListener('click', (ev) => {
+                    if (APP_STATE.selectedQuizPhotoSwapIndex === null) {
+                        APP_STATE.selectedQuizPhotoSwapIndex = idx;
+                        APP_STATE.currentQuizIndex = idx;
+                        renderQuizQuestion();
+                    } else if (APP_STATE.selectedQuizPhotoSwapIndex === idx) {
+                        APP_STATE.selectedQuizPhotoSwapIndex = null;
+                        renderQuizPhotoStrip();
+                    } else {
+                        swapQuizPhotoItems(APP_STATE.selectedQuizPhotoSwapIndex, idx, ev);
+                        APP_STATE.selectedQuizPhotoSwapIndex = null;
+                    }
+                });
+
+                strip.appendChild(card);
+            });
+        }
+
+        function swapQuizPhotoItems(i, j, ev) {
+            if (ev) createSparkleBurst(ev.clientX, ev.clientY, 8);
+            const temp = QUIZ_PHOTOS[i];
+            QUIZ_PHOTOS[i] = QUIZ_PHOTOS[j];
+            QUIZ_PHOTOS[j] = temp;
+            renderQuizQuestion();
+        }
+
+        function shuffleQuizPhotos(ev) {
+            if (ev) createSparkleBurst(ev.clientX, ev.clientY, 8);
+            QUIZ_PHOTOS.reverse();
+            renderQuizQuestion();
+        }
+
+        function renderScrapbookPhotos() {
+            const slots = document.querySelectorAll('.scrapbook-photo-slot');
+            slots.forEach((slot) => {
+                const idx = parseInt(slot.getAttribute('data-sb-slot'), 10);
+                const item = SCRAPBOOK_PHOTOS[idx];
+                if (!item) return;
+
+                slot.innerHTML = `
+                    <div class="polaroid-card rounded-2xl w-full max-w-sm relative ${item.rotation}"
+                         draggable="true"
+                         onclick="togglePolaroidZoom(this)">
+                        <div class="${item.tapeClass} -top-3 left-1/2 -translate-x-1/2"></div>
+                        <div class="aspect-[4/3] w-full overflow-hidden rounded-lg bg-babyblue/40">
+                            <img src="${item.src}" alt="${item.note}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="mt-3 text-center px-2">
+                            <span class="text-[10px] uppercase tracking-widest text-dustyrose font-semibold block">${item.note}</span>
+                            <p class="font-hand text-2xl text-inkSoft mt-0.5">${item.caption}</p>
+                        </div>
+                    </div>
+                `;
+
+                const img = slot.querySelector('img');
+                img.onerror = function() {
+                    handleMediaFallback(this, item.note, 'landscape');
+                };
+
+                const card = slot.querySelector('.polaroid-card');
+                card.addEventListener('dragstart', (ev) => {
+                    ev.dataTransfer.setData('text/sb-idx', idx.toString());
+                    card.classList.add('dragging');
+                });
+                card.addEventListener('dragend', () => card.classList.remove('dragging'));
+                card.addEventListener('dragover', (ev) => ev.preventDefault());
+                card.addEventListener('drop', (ev) => {
+                    ev.preventDefault();
+                    const fromIdx = parseInt(ev.dataTransfer.getData('text/sb-idx'), 10);
+                    if (!isNaN(fromIdx) && fromIdx !== idx) {
+                        swapScrapbookPair(fromIdx, idx, ev);
+                    }
+                });
+            });
+
+            // Also render the 5-card mini reorder tray on Spread 3
+            const tray = document.getElementById('scrapbook-mini-tray');
+            if (tray) {
+                tray.innerHTML = '';
+                SCRAPBOOK_PHOTOS.forEach((item, idx) => {
+                    const isSelected = APP_STATE.selectedScrapbookSwapIndex === idx;
+                    const thumb = document.createElement('button');
+                    thumb.type = 'button';
+                    thumb.className = `p-1.5 rounded-xl bg-white border text-center transition-all ${
+                        isSelected ? 'border-dustyrose ring-2 ring-dustyrose scale-105' : 'border-powder hover:border-dustyrose'
+                    }`;
+                    thumb.innerHTML = `
+                        <div class="aspect-square w-full overflow-hidden rounded-lg bg-babyblue/30">
+                            <img src="${item.src}" alt="${item.note}" class="w-full h-full object-cover">
+                        </div>
+                        <span class="block text-[10px] font-medium text-inkSoft mt-1 truncate">${item.note}</span>
+                    `;
+                    const tImg = thumb.querySelector('img');
+                    tImg.onerror = function() {
+                        handleMediaFallback(this, item.note, 'square');
+                    };
+                    thumb.onclick = (ev) => {
+                        const statusEl = document.getElementById('sb-swap-status');
+                        if (APP_STATE.selectedScrapbookSwapIndex === null) {
+                            APP_STATE.selectedScrapbookSwapIndex = idx;
+                            if (statusEl) statusEl.textContent = `Selected ${item.note} — tap another to swap`;
+                            renderScrapbookPhotos();
+                        } else if (APP_STATE.selectedScrapbookSwapIndex === idx) {
+                            APP_STATE.selectedScrapbookSwapIndex = null;
+                            if (statusEl) statusEl.textContent = `Select a card to move`;
+                            renderScrapbookPhotos();
+                        } else {
+                            swapScrapbookPair(APP_STATE.selectedScrapbookSwapIndex, idx, ev);
+                            APP_STATE.selectedScrapbookSwapIndex = null;
+                            if (statusEl) statusEl.textContent = `Swapped keepsake positions ✦`;
+                        }
+                    };
+                    tray.appendChild(thumb);
+                });
+            }
+        }
+
+        function swapScrapbookPair(i, j, ev) {
+            if (ev) createSparkleBurst(ev.clientX || window.innerWidth / 2, ev.clientY || window.innerHeight / 2, 8);
+            const temp = SCRAPBOOK_PHOTOS[i];
+            SCRAPBOOK_PHOTOS[i] = SCRAPBOOK_PHOTOS[j];
+            SCRAPBOOK_PHOTOS[j] = temp;
+            renderScrapbookPhotos();
+        }
+
+        function goToScrapbookSpread(spreadIndex) {
+            APP_STATE.currentScrapbookSpread = spreadIndex;
+            document.querySelectorAll('.scrapbook-spread').forEach((el, idx) => {
+                if (idx === spreadIndex) {
+                    el.classList.add('active-spread');
+                } else {
+                    el.classList.remove('active-spread');
+                }
+            });
+
+            document.querySelectorAll('.spread-pill').forEach((btn, idx) => {
+                if (idx === spreadIndex) {
+                    btn.className = 'spread-pill px-3 py-1 rounded-full text-xs font-medium bg-inkSoft text-white shadow-sm';
+                } else {
+                    btn.className = 'spread-pill px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-inkSoft border border-powder hover:bg-white';
+                }
+            });
+
+            document.getElementById('sb-page-indicator').textContent = `Page ${spreadIndex + 1} of 6`;
+            document.getElementById('sb-prev-btn').disabled = spreadIndex === 0;
+            document.getElementById('sb-next-btn').textContent = spreadIndex === 5 ? 'Back to Cover ↺' : 'Next Page →';
+
+            if (spreadIndex === 5) {
+                setTimeout(() => resizeSignatureCanvas(), 80);
+            }
+        }
+
+        function stepScrapbookSpread(delta) {
+            const next = (APP_STATE.currentScrapbookSpread + delta + 6) % 6;
+            goToScrapbookSpread(next);
+        }
+
+        // Video Memory Player (`index 11.mp4`)
+        function playMemoryVideo(ev) {
+            if (ev) createSparkleBurst(ev.clientX, ev.clientY, 10);
+            const video = document.getElementById('memory-video');
+            const overlay = document.getElementById('video-poster-overlay');
+            const statusNote = document.getElementById('video-status-note');
+
+            if (!video) return;
+
+            // Gently pause background music while watching video
+            const bgAudio = document.getElementById('bg-music');
+            if (bgAudio && !bgAudio.paused) {
+                bgAudio.pause();
+                updateMusicUI(false);
+            }
+
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                }).catch(() => {
+                    if (statusNote) {
+                        statusNote.textContent = "Place 'index 11.mp4' in the same folder to watch our moving memory together ✦";
+                        statusNote.classList.add('text-dustyrose', 'font-medium');
+                    }
+                });
+            }
+        }
+
+        /* =====================================================================
+         * HANDWRITTEN SIGNATURE & DOODLE CANVAS (Preserves strokes on resize!)
+         * ===================================================================== */
+        const CANVAS_STATE = {
+            strokes: [], // Array of { color, size, points: [{x, y}] } normalized 0..1
+            currentStroke: null,
+            penColor: '#C98A94',
+            penSize: 3,
+            isDrawing: false
+        };
+
+        function initSignatureCanvas() {
+            const canvas = document.getElementById('signature-canvas');
+            if (!canvas) return;
+
+            // Pre-populate a delicate initial handwritten heart & note from Miyu on the left side
+            CANVAS_STATE.strokes.push({
+                color: '#C98A94',
+                size: 2.5,
+                points: [
+                    { x: 0.20, y: 0.42 },
+                    { x: 0.17, y: 0.35 },
+                    { x: 0.12, y: 0.38 },
+                    { x: 0.13, y: 0.46 },
+                    { x: 0.20, y: 0.56 },
+                    { x: 0.27, y: 0.46 },
+                    { x: 0.28, y: 0.38 },
+                    { x: 0.23, y: 0.35 },
+                    { x: 0.20, y: 0.42 }
+                ]
+            });
+
+            function getNormalizedPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)),
+                    y: Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
+                };
+            }
+
+            function startDraw(e) {
+                if (e.cancelable) e.preventDefault();
+                CANVAS_STATE.isDrawing = true;
+                const pos = getNormalizedPos(e);
+                CANVAS_STATE.currentStroke = {
+                    color: CANVAS_STATE.penColor,
+                    size: CANVAS_STATE.penSize,
+                    points: [pos]
+                };
+                CANVAS_STATE.strokes.push(CANVAS_STATE.currentStroke);
+                redrawSignatureCanvas();
+            }
+
+            function moveDraw(e) {
+                if (!CANVAS_STATE.isDrawing || !CANVAS_STATE.currentStroke) return;
+                if (e.cancelable) e.preventDefault();
+                const pos = getNormalizedPos(e);
+                CANVAS_STATE.currentStroke.points.push(pos);
+                redrawSignatureCanvas();
+            }
+
+            function endDraw() {
+                CANVAS_STATE.isDrawing = false;
+                CANVAS_STATE.currentStroke = null;
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', moveDraw);
+            window.addEventListener('mouseup', endDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', moveDraw, { passive: false });
+            canvas.addEventListener('touchend', endDraw);
+
+            window.addEventListener('resize', resizeSignatureCanvas);
+            resizeSignatureCanvas();
+        }
+
+        function resizeSignatureCanvas() {
+            const canvas = document.getElementById('signature-canvas');
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+            redrawSignatureCanvas();
+        }
+
+        function redrawSignatureCanvas() {
+            const canvas = document.getElementById('signature-canvas');
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            const ctx = canvas.getContext('2d');
+            const w = rect.width;
+            const h = rect.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Subtle lined paper background & center divider on canvas
+            ctx.strokeStyle = 'rgba(201, 138, 148, 0.14)';
+            ctx.lineWidth = 1;
+            for (let y = 56; y < h; y += 30) {
+                ctx.beginPath();
+                ctx.moveTo(16, y);
+                ctx.lineTo(w - 16, y);
+                ctx.stroke();
+            }
+
+            // Center dashed divider between Miyu's note and Seji's space
+            ctx.save();
+            ctx.setLineDash([5, 6]);
+            ctx.strokeStyle = 'rgba(184, 204, 224, 0.6)';
+            ctx.beginPath();
+            ctx.moveTo(w / 2, 48);
+            ctx.lineTo(w / 2, h - 20);
+            ctx.stroke();
+            ctx.restore();
+
+            // Subtle pre-written note under Miyu's side
+            ctx.font = 'italic 18px "Cormorant Garamond", serif';
+            ctx.fillStyle = 'rgba(74, 68, 83, 0.65)';
+            ctx.fillText('“Always with you, Bebe — Miyu”', 24, h - 28);
+
+            // Replay all user/Miyu strokes
+            for (const stroke of CANVAS_STATE.strokes) {
+                if (!stroke.points || stroke.points.length === 0) continue;
+                ctx.beginPath();
+                ctx.strokeStyle = stroke.color;
+                ctx.fillStyle = stroke.color;
+                ctx.lineWidth = stroke.size;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                const first = stroke.points[0];
+                if (stroke.points.length === 1) {
+                    ctx.arc(first.x * w, first.y * h, stroke.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.moveTo(first.x * w, first.y * h);
+                    for (let i = 1; i < stroke.points.length; i++) {
+                        const pt = stroke.points[i];
+                        ctx.lineTo(pt.x * w, pt.y * h);
+                    }
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function setPenColor(color, btnEl) {
+            CANVAS_STATE.penColor = color;
+            document.querySelectorAll('.pen-swatch').forEach((el) => {
+                el.classList.remove('ring-2', 'ring-offset-2', 'ring-inkSoft');
+            });
+            if (btnEl) {
+                btnEl.classList.add('ring-2', 'ring-offset-2', 'ring-inkSoft');
+            }
+        }
+
+        function setPenSize(val) {
+            CANVAS_STATE.penSize = parseFloat(val);
+        }
+
+        function undoCanvasStroke() {
+            CANVAS_STATE.strokes.pop();
+            redrawSignatureCanvas();
+        }
+
+        function clearSignatureCanvas() {
+            CANVAS_STATE.strokes = [];
+            redrawSignatureCanvas();
+        }
+
+        function stampLittleHeart() {
+            const cx = 0.65 + (Math.random() * 0.2 - 0.1);
+            const cy = 0.48 + (Math.random() * 0.2 - 0.1);
+            const pts = [];
+            for (let t = 0; t <= Math.PI * 2; t += 0.2) {
+                const hx = 16 * Math.pow(Math.sin(t), 3);
+                const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+                pts.push({
+                    x: cx + hx * 0.0022,
+                    y: cy + hy * 0.0032
+                });
+            }
+            CANVAS_STATE.strokes.push({
+                color: CANVAS_STATE.penColor,
+                size: 2.5,
+                points: pts
+            });
+            redrawSignatureCanvas();
+        }
+
+        function downloadSignaturePNG(ev) {
+            if (ev) createSparkleBurst(ev.clientX, ev.clientY, 12);
+            const sourceCanvas = document.getElementById('signature-canvas');
+            if (!sourceCanvas) return;
+
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = 900;
+            exportCanvas.height = 520;
+            const ectx = exportCanvas.getContext('2d');
+
+            // Cream paper background
+            ectx.fillStyle = '#FDFBF7';
+            ectx.fillRect(0, 0, 900, 520);
+
+            // Decorative border
+            ectx.strokeStyle = '#C98A94';
+            ectx.lineWidth = 2;
+            ectx.strokeRect(18, 18, 864, 484);
+
+            // Header text
+            ectx.font = 'italic 24px Georgia, serif';
+            ectx.fillStyle = '#4A4453';
+            ectx.fillText("Miyu's little note", 45, 58);
+            ectx.fillText("A little space for Seji", 630, 58);
+
+            ectx.font = '13px sans-serif';
+            ectx.fillStyle = '#766E82';
+            ectx.fillText('A LITTLE UNIVERSE · 14TH MENSIVERSARY KEEPSAKE (22.12.2024)', 255, 55);
+
+            // Draw the interactive canvas content onto the keepsake sheet
+            ectx.drawImage(sourceCanvas, 30, 75, 840, 410);
+
+            const link = document.createElement('a');
+            link.download = 'Miyu-and-Seji-14th-Mensiversary-Note.png';
+            link.href = exportCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function unlockSecretCorner(ev, openImmediately) {
+            APP_STATE.secretUnlocked = true;
+            const dot = document.getElementById('secret-unlocked-dot');
+            if (dot) dot.classList.remove('hidden');
+
+            document.getElementById('secret-locked-view')?.classList.add('hidden');
+            document.getElementById('secret-unlocked-view')?.classList.remove('hidden');
+
+            if (openImmediately) {
+                revealSecretNotePaper(ev);
+            }
+        }
+
+        function revealSecretNotePaper(ev) {
+            if (ev) createSparkleBurst(ev.clientX || window.innerWidth / 2, ev.clientY || window.innerHeight / 2, 18);
+            APP_STATE.secretBoxOpened = true;
+            document.getElementById('secret-box-trigger')?.classList.add('hidden');
+            document.getElementById('secret-message-paper')?.classList.remove('hidden');
+        }
+
+        // Initialize Everything When Window Loads
+        window.onload = function () {
+            initAmbientCanvas();
+            initIntroScreen();
+            updateRelationshipCounter();
+            setInterval(updateRelationshipCounter, 30000);
+            initLetterPhotoDrag();
+            renderQuizQuestion();
+            renderScrapbookPhotos();
+            initSignatureCanvas();
+        };
+    </script>
+</body>
+</html>
